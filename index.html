@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PaleoIMAGING | PAGES Working Group</title>
+  <meta name="description" content="PaleoIMAGING is a Working Group of PAGES. The new community website is under construction.">
+  <link rel="icon" href="assets/favicons/favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="48x48" href="assets/favicons/favicon-48x48.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicons/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicons/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/favicons/apple-touch-icon.png">
+  <link rel="manifest" href="assets/favicons/site.webmanifest">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-height: 100%;
+      background: #ffffff;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4rem 1.5rem;
+      background: linear-gradient(180deg, #ececec 0%, #ffffff 100%);
+      background-attachment: fixed;
+      color: #4a4f55;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.5;
+      text-align: center;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    main {
+      width: 100%;
+      max-width: 52rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-logo {
+      display: block;
+      width: min(100%, 44rem);
+      height: auto;
+    }
+
+    .affiliation {
+      margin-top: clamp(2.5rem, 6vw, 4rem);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .affiliation p {
+      margin: 0;
+      font-size: 1.0625rem;
+      letter-spacing: 0.02em;
+      color: #5b6169;
+    }
+
+    .pages-logo {
+      display: block;
+      width: min(60%, 13rem);
+      height: auto;
+    }
+
+    .notice {
+      margin-top: clamp(2.5rem, 6vw, 4rem);
+      padding-top: 1.75rem;
+      border-top: 1px solid #d6d8db;
+      width: min(100%, 16rem);
+    }
+
+    .notice h1 {
+      margin: 0;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #3d4147;
+    }
+
+    .notice p {
+      margin: 0.5rem 0 0;
+      font-size: 0.8125rem;
+      color: #7a8088;
+    }
+
+    @media (min-width: 40rem) {
+      .affiliation {
+        flex-direction: row;
+        justify-content: center;
+        gap: 1.5rem;
+      }
+
+      .pages-logo {
+        width: 11rem;
+      }
+
+      .notice {
+        width: min(100%, 24rem);
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <img class="hero-logo" src="assets/images/paleoimaging_hero_logo.png" alt="PaleoIMAGING logo">
+
+    <section class="affiliation" aria-label="Affiliation">
+      <p>PaleoIMAGING is a Working Group of</p>
+      <img class="pages-logo" src="assets/images/PAGES_logo.svg" alt="PAGES – Past Global Changes logo">
+    </section>
+
+    <section class="notice" aria-label="Site status">
+      <h1>Website under construction</h1>
+      <p>We are currently building the new PaleoIMAGING community website.</p>
+    </section>
+  </main>
+</body>
+</html>
