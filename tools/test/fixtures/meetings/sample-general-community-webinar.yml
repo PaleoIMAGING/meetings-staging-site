@@ -1,0 +1,17 @@
+# SAMPLE RECORD: illustrative only, not a real PaleoIMAGING event.
+schema_version: 1
+id: sample-general-community-webinar
+sample: true
+title: "[SAMPLE] Community webinar"
+description: "Sample open webinar for the whole community, not tied to a single Working Group."
+wgs: [general]
+type: webinar
+format: online
+start: "2027-02-10T09:00"
+end: "2027-02-10T10:00"
+timezone: "Asia/Tokyo"
+access: public
+url: "https://example.org/sample-webinar-link"
+organizers:
+  - name: "Sample Organizer"
+    affiliation: "Example Institute"

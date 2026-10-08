@@ -1,0 +1,26 @@
+# SAMPLE RECORD: illustrative only, not a real PaleoIMAGING event.
+schema_version: 1
+id: sample-past-community-workshop
+sample: true
+title: "[SAMPLE] Past community workshop"
+description: "Sample archived hybrid workshop that shows how past meetings and their materials appear in the archive."
+wgs: [general]
+type: workshop
+format: hybrid
+start: "2026-05-12T09:00"
+end: "2026-05-14T16:00"
+timezone: "Europe/Warsaw"
+access: public
+url: "https://example.org/sample-past-link"
+location:
+  venue: "Example Conference Centre"
+  city: "Example City"
+  country: "Poland"
+organizers:
+  - name: "Sample Organizer"
+    affiliation: "Example University"
+links:
+  - label: "Sample minutes"
+    url: "https://example.org/sample-minutes"
+  - label: "Sample recording"
+    url: "https://example.org/sample-recording"

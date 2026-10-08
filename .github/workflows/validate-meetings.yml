@@ -1,0 +1,39 @@
+name: Validate meetings
+
+on:
+  pull_request:
+    paths:
+      - "_data/meetings/**"
+      - "_data/meetings_config.yml"
+      - "meetings/feed.ics"
+      - "assets/js/meetings-*.js"
+      - "tools/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tools/package-lock.json
+      - run: npm ci
+        working-directory: tools
+      - name: Unit tests (validator, recurrence, iCalendar, shared modules)
+        run: npm test
+        working-directory: tools
+      - name: Validate published records
+        run: npm run validate
+        working-directory: tools
+      - name: Committed calendar feed is up to date
+        run: npm run check:ics
+        working-directory: tools
+      - name: Shared-file manifest is up to date
+        run: npm run shared:check
+        working-directory: tools

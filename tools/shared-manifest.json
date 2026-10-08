@@ -1,0 +1,10 @@
+{
+  "description": "Files consumed unchanged by other repositories. Regenerate with npm run shared:write.",
+  "files": {
+    "assets/js/meetings-core.js": "9fb9bcaa890a8a7181535833ac3ab463a824e0ee29305af7e30457521707dd18",
+    "assets/js/meetings-validate.js": "40de597e28c1554ad930674c45a9b3dc21e2894d73083d23a378b2d62e52317b",
+    "assets/js/meetings-ics.js": "c0237f5f089e7f874c8314e5b526e0b23b571e420bb89dd1e483c7607836b95e",
+    "_data/meetings_config.yml": "287613d70b19436932df7668d818753a7d6102453e4dcffde41a17a1cfa93040",
+    "tools/test/fixtures/validation-vectors.json": "a756f2341b3dba3cd90ffa1f9d4abfc36370d155ad83e402ae02d98785ed2f6b"
+  }
+}

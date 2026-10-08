@@ -1,0 +1,107 @@
+# PaleoIMAGING meetings: governance and presentation settings.
+#
+# Everything the community may want to change lives here, not in code:
+# Working Groups, meeting types, formats and their required fields, access
+# levels, statuses, recurrence rules, limits, and calendar presentation.
+# The page, the iCalendar feed, the validator (tools/validate-meetings.mjs)
+# and, later, the submission Worker all read this file.
+#
+# Compatibility rule: never delete or rename an id that existing records use.
+# Retire it instead (`active: false`); retired ids stay valid for old records.
+
+schema_version: 1
+
+# Working Groups. "general" is for events not tied to a single WG.
+# `exclusive: true` means the id cannot be combined with other ids.
+wgs:
+  - id: wg1
+    label: "WG1 · Standard materials"
+    short: WG1
+    active: true
+  - id: wg2
+    label: "WG2 · Interlab comparison"
+    short: WG2
+    active: true
+  - id: wg3
+    label: "WG3 · Best practices and workflows"
+    short: WG3
+    active: true
+  - id: wg4
+    label: "WG4 · Datasets"
+    short: WG4
+    active: true
+  - id: general
+    label: "General community"
+    short: General
+    active: true
+    exclusive: true
+
+types:
+  - { id: wg-meeting, label: "Working Group meeting", active: true }
+  - { id: workshop,   label: "Workshop",              active: true }
+  - { id: webinar,    label: "Webinar or seminar",    active: true }
+  - { id: tutorial,   label: "Tutorial or training",  active: true }
+  - { id: social,     label: "Social or networking",  active: true }
+  - { id: other,      label: "Other",                 active: true }
+
+# `requires` lists dotted field paths that must be present for this format.
+formats:
+  - { id: online,    label: "Online",    requires: [] }
+  - { id: in-person, label: "In person", requires: [location.venue, location.city, location.country] }
+  - { id: hybrid,    label: "Hybrid",    requires: [location.venue, location.city, location.country] }
+
+# How participants get in. Public records never contain private links.
+#   public       - `url` may be published (online and hybrid events)
+#   registration - only `registration_url` (a sign-up page) is published
+#   private      - nothing but `access_note` is published (for example
+#                  "Link sent to WG1 members"); the real link is shared
+#                  outside the repository
+access:
+  - { id: public,       label: "Open: join link published", requires: [url] }
+  - { id: registration, label: "Registration required",    requires: [registration_url] }
+  - { id: private,      label: "Invitation only",           requires: [access_note] }
+
+statuses:
+  - { id: scheduled, label: "Scheduled", ics_status: CONFIRMED }
+  - { id: postponed, label: "Postponed", ics_status: TENTATIVE }
+  - { id: cancelled, label: "Cancelled", ics_status: CANCELLED }
+
+recurrence:
+  freqs: [daily, weekly, monthly]
+  max_interval: 12
+  require_end: true          # every series needs `until` or `count`
+  max_occurrences: 260
+
+# Fields accepted in a meeting record. Unknown fields are rejected, so the
+# public data cannot silently accumulate personal or private information.
+# Organizer contact details are deliberately NOT part of the public schema.
+fields:
+  required: [schema_version, id, title, wgs, type, format, start, end, timezone, access, organizers]
+  optional: [description, status, location, recurrence, url, registration_url, access_note, links, language, sample]
+
+limits:
+  title: 120
+  description: 1500
+  access_note: 200
+  organizers: 10
+  organizer_name: 100
+  organizer_affiliation: 150
+  links: 8
+  link_label: 60
+  url: 500
+  venue: 150
+  city: 80
+  country: 80
+  address: 200
+
+# Page and calendar presentation.
+ui:
+  site_url: "https://paleoimaging.github.io"   # used for links and UIDs in the calendar feed
+  default_view: upcoming          # upcoming | past | all
+  recurring_upcoming_limit: 3     # occurrences shown per series in "upcoming"
+  show_sample_banner: true        # banner when any record has `sample: true`
+  calendar_name: "PaleoIMAGING meetings"
+  submission:
+    enabled: false                # switched on when the submission portal exists
+    url: ""
+    message: "Online meeting submission is being prepared and will open here."

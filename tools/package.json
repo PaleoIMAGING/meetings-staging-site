@@ -1,0 +1,23 @@
+{
+  "name": "paleoimaging-meetings-tools",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Validation and tests for the PaleoIMAGING meetings data (not part of the published site).",
+  "type": "module",
+  "scripts": {
+    "validate": "node validate-meetings.mjs",
+    "test": "node --test \"test/*.test.mjs\"",
+    "build:ics": "node build-ics.mjs",
+    "check:ics": "node build-ics.mjs --check",
+    "shared:write": "node shared-manifest.mjs --write",
+    "shared:check": "node shared-manifest.mjs --check",
+    "test:site": "node site-test.mjs"
+  },
+  "dependencies": {
+    "yaml": "2.9.1"
+  },
+  "devDependencies": {
+    "ical.js": "2.2.1",
+    "jsdom": "26.1.0"
+  }
+}

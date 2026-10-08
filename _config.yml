@@ -1,0 +1,20 @@
+title: PaleoIMAGING
+description: PaleoIMAGING is a Working Group of PAGES.
+url: "https://paleoimaging.github.io"
+baseurl: ""
+lang: en
+timezone: UTC
+
+# The landing page (index.html) has no front matter and is copied unchanged.
+# Everything below is kept out of the published site.
+exclude:
+  - README.md
+  - TODO.md
+  - docs/
+  - tools/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/
+  - .github/
+  - .gitignore

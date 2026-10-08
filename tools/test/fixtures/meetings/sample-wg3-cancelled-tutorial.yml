@@ -1,0 +1,18 @@
+# SAMPLE RECORD: illustrative only, not a real PaleoIMAGING event.
+schema_version: 1
+id: sample-wg3-cancelled-tutorial
+sample: true
+title: "[SAMPLE] WG3 tutorial (cancelled)"
+description: "Sample cancelled event, to show how a cancelled status is displayed and exported."
+wgs: [wg3]
+type: tutorial
+format: online
+status: cancelled
+start: "2026-11-05T13:00"
+end: "2026-11-05T14:30"
+timezone: "Europe/London"
+access: public
+url: "https://example.org/sample-tutorial-link"
+organizers:
+  - name: "Sample Organizer"
+    affiliation: "Example University"

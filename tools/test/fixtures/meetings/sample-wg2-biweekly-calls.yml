@@ -1,0 +1,23 @@
+# SAMPLE RECORD: illustrative only, not a real PaleoIMAGING event.
+schema_version: 1
+id: sample-wg2-biweekly-calls
+sample: true
+title: "[SAMPLE] WG2 interlab comparison call"
+description: "Sample biweekly online call, held in a European time zone so that daylight saving changes can be seen in the local-time display."
+wgs: [wg2]
+type: wg-meeting
+format: online
+start: "2026-10-14T10:00"
+end: "2026-10-14T11:00"
+timezone: "Europe/Warsaw"
+recurrence:
+  freq: weekly
+  interval: 2
+  count: 8
+access: public
+url: "https://example.org/sample-meeting-link"
+organizers:
+  - name: "Sample Organizer"
+    affiliation: "Example University"
+  - name: "Second Sample Organizer"
+    affiliation: "Example Research Centre"

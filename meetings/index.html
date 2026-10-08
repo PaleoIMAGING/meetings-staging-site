@@ -1,0 +1,123 @@
+---
+layout: default
+title: Meetings
+description: Calendar of PaleoIMAGING Working Group meetings, workshops and community events.
+permalink: /meetings/
+noindex: true   # remove when the calendar is announced
+---
+{%- assign cfg = site.data.meetings_config -%}
+{%- assign all = "" | split: "" -%}
+{%- for item in site.data.meetings -%}
+  {%- assign all = all | push: item[1] -%}
+{%- endfor -%}
+{%- assign all = all | sort: "start" -%}
+{%- assign has_sample = false -%}
+{%- for m in all -%}{%- if m.sample -%}{%- assign has_sample = true -%}{%- endif -%}{%- endfor -%}
+{%- assign has_meetings = false -%}
+{%- if all.size > 0 -%}{%- assign has_meetings = true -%}{%- endif -%}
+
+<h1>Meetings</h1>
+<p class="lead">Working Group meetings, workshops and community events. Times are shown in each event's own time zone and, when different, in yours.</p>
+
+{%- if has_sample and cfg.ui.show_sample_banner %}
+<p class="banner" role="note"><strong>Sample data.</strong> The meetings listed below are illustrative examples used to test this calendar. They are not real PaleoIMAGING events.</p>
+{%- endif %}
+
+{%- if cfg.ui.submission.enabled %}
+<p class="notice-box"><a href="{{ cfg.ui.submission.url | escape }}">Propose a meeting</a></p>
+{%- else %}
+<p class="notice-box">{{ cfg.ui.submission.message | escape }}</p>
+{%- endif %}
+
+{%- unless has_meetings %}
+<div class="empty-state" id="empty-state" hidden>
+  <h2>No meetings are scheduled yet</h2>
+  <p>Working Group meetings, workshops and community events will be listed here once they are announced. Please check back soon.</p>
+</div>
+<noscript>
+  <div class="empty-state">
+    <h2>No meetings are scheduled yet</h2>
+    <p>Working Group meetings, workshops and community events will be listed here once they are announced. Please check back soon.</p>
+  </div>
+</noscript>
+{%- endunless %}
+
+<form class="toolbar" id="filters" role="search" aria-label="Filter meetings" hidden>
+  <div>
+    <label for="f-q">Search</label>
+    <input type="search" id="f-q" name="q" maxlength="80" autocomplete="off">
+  </div>
+  <div>
+    <label for="f-wg">Working Group</label>
+    <select id="f-wg" name="wg">
+      <option value="">All groups</option>
+      {%- for w in cfg.wgs %}{% unless w.active == false %}
+      <option value="{{ w.id | escape }}">{{ w.label | escape }}</option>
+      {%- endunless %}{% endfor %}
+    </select>
+  </div>
+  <div>
+    <label for="f-format">Format</label>
+    <select id="f-format" name="format">
+      <option value="">All formats</option>
+      {%- for f in cfg.formats %}
+      <option value="{{ f.id | escape }}">{{ f.label | escape }}</option>
+      {%- endfor %}
+    </select>
+  </div>
+  <div>
+    <label for="f-type">Type</label>
+    <select id="f-type" name="type">
+      <option value="">All types</option>
+      {%- for t in cfg.types %}{% unless t.active == false %}
+      <option value="{{ t.id | escape }}">{{ t.label | escape }}</option>
+      {%- endunless %}{% endfor %}
+    </select>
+  </div>
+  <button type="reset" class="btn btn--ghost" id="f-reset">Clear filters</button>
+</form>
+
+<div class="views" id="views" hidden>
+  <div class="tabs" role="group" aria-label="Time range">
+    <button type="button" data-view="upcoming" aria-pressed="false">Upcoming</button>
+    <button type="button" data-view="past" aria-pressed="false">Past</button>
+    <button type="button" data-view="all" aria-pressed="false">All</button>
+  </div>
+  <span class="count" id="count" aria-live="polite"></span>
+</div>
+
+<ol class="list" id="meeting-list"></ol>
+
+{%- if has_meetings %}
+<noscript>
+  <p class="notice-box">JavaScript is needed for filtering, local-time conversion and series expansion. The records below are shown in each event's own time zone; recurring series are listed once.</p>
+  <table class="static-list">
+    <thead><tr><th>Start</th><th>Meeting</th><th>Format</th><th>Groups</th></tr></thead>
+    <tbody>
+    {%- for m in all %}
+      <tr>
+        <td>{{ m.start | replace: "T", " " | escape }} ({{ m.timezone | escape }})</td>
+        <td>{{ m.title | escape }}{% if m.recurrence %} (recurring){% endif %}{% if m.status == "cancelled" %} (cancelled){% endif %}</td>
+        <td>{{ m.format | escape }}</td>
+        <td>{{ m.wgs | join: ", " | escape }}</td>
+      </tr>
+    {%- endfor %}
+    </tbody>
+  </table>
+</noscript>
+{%- endif %}
+
+<p class="subscribe">
+  Subscribe in your calendar app:
+  <code>{{ '/meetings/feed.ics' | absolute_url }}</code>
+  (<a href="{{ '/meetings/feed.ics' | relative_url }}">download</a>)
+</p>
+
+{%- comment -%}
+  Public data only. "<" is escaped so record text can never close the script
+  element; the page script renders everything with textContent, never innerHTML.
+{%- endcomment %}
+<script type="application/json" id="meetings-data">{"config":{{ cfg | jsonify | replace: "<", "<" }},"meetings":{{ all | jsonify | replace: "<", "<" }}}</script>
+<script src="{{ '/assets/js/meetings-core.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/meetings-ics.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/meetings-page.js' | relative_url }}"></script>
