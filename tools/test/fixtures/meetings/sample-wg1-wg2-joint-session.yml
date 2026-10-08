@@ -1,0 +1,17 @@
+# SAMPLE RECORD: illustrative only, not a real PaleoIMAGING event.
+schema_version: 1
+id: sample-wg1-wg2-joint-session
+sample: true
+title: "[SAMPLE] Joint WG1 and WG2 session"
+description: "Sample meeting shared by two Working Groups, with an invitation-only link that is deliberately not published."
+wgs: [wg1, wg2]
+type: wg-meeting
+format: online
+start: "2026-12-02T15:00"
+end: "2026-12-02T16:30"
+timezone: "America/New_York"
+access: private
+access_note: "Sample: invitation sent by the organizers to members of both groups."
+organizers:
+  - name: "Sample Organizer"
+    affiliation: "Example University"

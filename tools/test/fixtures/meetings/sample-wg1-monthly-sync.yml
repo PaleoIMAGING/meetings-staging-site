@@ -1,0 +1,22 @@
+# SAMPLE RECORD: illustrative only, not a real PaleoIMAGING event.
+schema_version: 1
+id: sample-wg1-monthly-sync
+sample: true
+title: "[SAMPLE] WG1 monthly check-in"
+description: "Sample recurring online meeting that shows how a monthly series appears in the calendar and the archive. It is not a real event."
+wgs: [wg1]
+type: wg-meeting
+format: online
+start: "2026-07-15T14:00"
+end: "2026-07-15T15:00"
+timezone: "UTC"
+recurrence:
+  freq: monthly
+  interval: 1
+  count: 12
+  exceptions: ["2026-12-15"]
+access: private
+access_note: "Sample: the link would be shared with WG1 members, not published here."
+organizers:
+  - name: "Sample Organizer"
+    affiliation: "Example Institute"

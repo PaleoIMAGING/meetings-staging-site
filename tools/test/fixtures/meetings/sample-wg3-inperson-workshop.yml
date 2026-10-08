@@ -1,0 +1,24 @@
+# SAMPLE RECORD: illustrative only, not a real PaleoIMAGING event.
+schema_version: 1
+id: sample-wg3-inperson-workshop
+sample: true
+title: "[SAMPLE] WG3 in-person workshop"
+description: "Sample two-day in-person workshop. The venue and city are placeholders."
+wgs: [wg3]
+type: workshop
+format: in-person
+start: "2026-11-18T09:00"
+end: "2026-11-19T17:00"
+timezone: "Europe/Berlin"
+access: registration
+registration_url: "https://example.org/sample-registration"
+location:
+  venue: "Example Conference Centre"
+  city: "Example City"
+  country: "Germany"
+organizers:
+  - name: "Sample Organizer"
+    affiliation: "Example University"
+links:
+  - label: "Sample agenda"
+    url: "https://example.org/sample-agenda"

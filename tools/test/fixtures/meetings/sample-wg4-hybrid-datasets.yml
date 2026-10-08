@@ -1,0 +1,21 @@
+# SAMPLE RECORD: illustrative only, not a real PaleoIMAGING event.
+schema_version: 1
+id: sample-wg4-hybrid-datasets
+sample: true
+title: "[SAMPLE] WG4 datasets hybrid session"
+description: "Sample hybrid meeting: participants can attend in a room or online. Registration is required to receive the online link."
+wgs: [wg4]
+type: wg-meeting
+format: hybrid
+start: "2027-01-20T10:00"
+end: "2027-01-20T12:30"
+timezone: "America/Sao_Paulo"
+access: registration
+registration_url: "https://example.org/sample-registration"
+location:
+  venue: "Example Auditorium"
+  city: "Example City"
+  country: "Brazil"
+organizers:
+  - name: "Sample Organizer"
+    affiliation: "Example University"
