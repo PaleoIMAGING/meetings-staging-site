@@ -54,3 +54,13 @@ jobs:
 
       - name: Check the sample build (filters, series, archive, safety)
         run: node tools/site-test.mjs "$RUNNER_TEMP/site-samples" --samples
+
+      - name: Build a copy containing a deliberately hostile (invalid) record
+        run: |
+          mkdir "$RUNNER_TEMP/with-hostile"
+          rsync -a --exclude .git --exclude _site --exclude node_modules ./ "$RUNNER_TEMP/with-hostile/"
+          cp tools/test/fixtures/hostile/hostile-record.yml "$RUNNER_TEMP/with-hostile/_data/meetings/"
+          bundle exec jekyll build --source "$RUNNER_TEMP/with-hostile" --destination "$RUNNER_TEMP/site-hostile"
+
+      - name: Check that hostile data is neutralised by the page itself
+        run: node tools/site-test.mjs "$RUNNER_TEMP/site-hostile" --hostile

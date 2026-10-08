@@ -117,7 +117,7 @@ noindex: true   # remove when the calendar is announced
   Public data only. "<" is escaped so record text can never close the script
   element; the page script renders everything with textContent, never innerHTML.
 {%- endcomment %}
-<script type="application/json" id="meetings-data">{"config":{{ cfg | jsonify | replace: "<", "<" }},"meetings":{{ all | jsonify | replace: "<", "<" }}}</script>
+<script type="application/json" id="meetings-data">{"config":{{ cfg | jsonify | replace: "<", "\u003c" }},"meetings":{{ all | jsonify | replace: "<", "\u003c" }}}</script>
 <script src="{{ '/assets/js/meetings-core.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/meetings-ics.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/meetings-page.js' | relative_url }}"></script>
