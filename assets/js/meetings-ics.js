@@ -136,10 +136,11 @@
   }
 
   function placeOf(m) {
-    if (m.format === "online") return "Online";
+    var via = m.platform ? " (" + m.platform + ")" : "";
+    if (m.format === "online") return "Online" + via;
     var loc = m.location || {};
     var place = [loc.venue, loc.city, loc.country].filter(Boolean).join(", ");
-    return m.format === "hybrid" ? place + " (also online)" : place;
+    return m.format === "hybrid" ? place + " (also online" + (m.platform ? ", " + m.platform : "") + ")" : place;
   }
 
   function statusFor(m, cfg) {

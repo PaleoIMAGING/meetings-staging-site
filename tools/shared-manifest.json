@@ -2,9 +2,9 @@
   "description": "Files consumed unchanged by other repositories. Regenerate with npm run shared:write.",
   "files": {
     "assets/js/meetings-core.js": "9fb9bcaa890a8a7181535833ac3ab463a824e0ee29305af7e30457521707dd18",
-    "assets/js/meetings-validate.js": "40de597e28c1554ad930674c45a9b3dc21e2894d73083d23a378b2d62e52317b",
-    "assets/js/meetings-ics.js": "c0237f5f089e7f874c8314e5b526e0b23b571e420bb89dd1e483c7607836b95e",
-    "_data/meetings_config.yml": "287613d70b19436932df7668d818753a7d6102453e4dcffde41a17a1cfa93040",
-    "tools/test/fixtures/validation-vectors.json": "a756f2341b3dba3cd90ffa1f9d4abfc36370d155ad83e402ae02d98785ed2f6b"
+    "assets/js/meetings-validate.js": "dbf3001b570c5c14115f16c49e8149b6722561144c2ee6515c39b7d608c0f95a",
+    "assets/js/meetings-ics.js": "10b52e513878cbc71dd0a491a6e92660e9010e70979dd27d571d474727aa894f",
+    "_data/meetings_config.yml": "e364508d714c8d6458bb9fdc71dd974d6f59dda470e43b8d4b9aabe110bbf169",
+    "tools/test/fixtures/validation-vectors.json": "cc7373d44b2f2a3ab65d3f6c8f295e5a1d253a017d8fd80833902b3746a6f8ef"
   }
 }

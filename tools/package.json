@@ -11,7 +11,8 @@
     "check:ics": "node build-ics.mjs --check",
     "shared:write": "node shared-manifest.mjs --write",
     "shared:check": "node shared-manifest.mjs --check",
-    "test:site": "node site-test.mjs"
+    "test:site": "node site-test.mjs",
+    "test:form": "node form-test.mjs"
   },
   "dependencies": {
     "yaml": "2.9.1"

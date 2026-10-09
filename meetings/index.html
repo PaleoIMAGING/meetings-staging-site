@@ -120,4 +120,5 @@ noindex: true   # remove when the calendar is announced
 <script type="application/json" id="meetings-data">{"config":{{ cfg | jsonify | replace: "<", "\u003c" }},"meetings":{{ all | jsonify | replace: "<", "\u003c" }}}</script>
 <script src="{{ '/assets/js/meetings-core.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/meetings-ics.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/meetings-render.js' | relative_url }}"></script>
 <script src="{{ '/assets/js/meetings-page.js' | relative_url }}"></script>

@@ -20,6 +20,9 @@
   var BAD_TEXT_RE = /[<>\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F‪-‮⁦-⁩]/;
   var WEEKDAYS = ["MO", "TU", "WE", "TH", "FR", "SA", "SU"];
   var LOCATION_KEYS = ["venue", "address", "city", "country"];
+  // Privacy guards for prose (see `privacy` in the config).
+  var EMAIL_RE = /[^\s@<>]+@[^\s@<>]+\.[A-Za-z]{2,}/;
+  var URL_IN_TEXT_RE = /(?:https?:\/\/|www\.)\S|\b(?:[a-z0-9-]+\.)+[a-z]{2,}\/\S/i;
   var RECURRENCE_KEYS = ["freq", "interval", "until", "count", "byday", "exceptions"];
 
   function isObj(v) { return v !== null && typeof v === "object" && !Array.isArray(v); }
@@ -33,6 +36,7 @@
   function validateUrl(value, max) {
     if (typeof value !== "string" || value.length > max) return "must be a string of at most " + max + " characters";
     if (/\s/.test(value)) return "must not contain whitespace";
+    if (/[<>]/.test(value)) return "must not contain < or >";
     var u;
     try { u = new URL(value); } catch (e) { return "must be a valid URL"; }
     if (u.protocol !== "https:") return "must use https";
@@ -56,6 +60,9 @@
       if (typeof value !== "string") return err(field, "must be a string");
       if (value.length > max) err(field, "must be at most " + max + " characters");
       if (BAD_TEXT_RE.test(value)) err(field, "contains markup or control characters");
+      var priv = config.privacy || {};
+      if (priv.block_emails && EMAIL_RE.test(value)) err(field, "must not contain email addresses (contact details stay private)");
+      if (priv.block_urls_in_text && URL_IN_TEXT_RE.test(value)) err(field, "must not contain web addresses (use the dedicated link fields)");
     }
 
     if (present(rec.schema_version) &&
@@ -69,6 +76,7 @@
     text("title", rec.title, L.title, true);
     text("description", rec.description, L.description);
     text("access_note", rec.access_note, L.access_note);
+    text("platform", rec.platform, L.platform);
 
     // Working groups (retired ids stay valid for old records).
     if (!Array.isArray(rec.wgs) || rec.wgs.length === 0) err("wgs", "must be a non-empty list");
@@ -114,7 +122,8 @@
     var acc = config.access.filter(function (x) { return x.id === rec.access; })[0];
     if (present(rec.access) && !acc) err("access", 'unknown access level "' + rec.access + '"');
     if (acc) {
-      acc.requires.forEach(function (p) { if (!present(getPath(rec, p))) err(p, 'required for access "' + acc.id + '"'); });
+      var skip = (acc.requires_skip_formats || []).indexOf(rec.format) > -1;
+      if (!skip) acc.requires.forEach(function (p) { if (!present(getPath(rec, p))) err(p, 'required for access "' + acc.id + '"'); });
       if (acc.id !== "public" && present(rec.url)) err("url", 'must not be published when access is "' + acc.id + '"');
       if (acc.id !== "registration" && present(rec.registration_url)) err("registration_url", 'only allowed when access is "registration"');
     }
@@ -125,7 +134,7 @@
 
     // Organizers: names and affiliations only. Contact details stay private.
     if (present(rec.organizers)) {
-      if (!Array.isArray(rec.organizers) || rec.organizers.length > L.organizers) err("organizers", "must be a list of 1 to " + L.organizers);
+      if (!Array.isArray(rec.organizers) || rec.organizers.length < 1 || rec.organizers.length > L.organizers) err("organizers", "must be a list of 1 to " + L.organizers);
       else rec.organizers.forEach(function (o, i) {
         var at = "organizers[" + i + "]";
         if (!isObj(o)) return err(at, "must be a mapping");
