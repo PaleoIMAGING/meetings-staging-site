@@ -51,11 +51,13 @@ jobs:
 
       - name: Check the empty-state fixture build (empty state, homepage unchanged, valid feed)
         run: node tools/site-test.mjs "$RUNNER_TEMP/site-empty" --empty
+      # The sample and hostile builds start from the record-free copy, so they never depend on
+      # which real meetings are published.
 
       - name: Build a copy containing the sample fixtures
         run: |
           mkdir "$RUNNER_TEMP/with-samples"
-          rsync -a --exclude .git --exclude _site --exclude node_modules ./ "$RUNNER_TEMP/with-samples/"
+          rsync -a --exclude .git --exclude _site --exclude node_modules "$RUNNER_TEMP/without-records/" "$RUNNER_TEMP/with-samples/"
           cp tools/test/fixtures/meetings/*.yml "$RUNNER_TEMP/with-samples/_data/meetings/"
           node tools/build-ics.mjs --dir "$RUNNER_TEMP/with-samples/_data/meetings" --out "$RUNNER_TEMP/with-samples/meetings/feed.ics"
           bundle exec jekyll build --source "$RUNNER_TEMP/with-samples" --destination "$RUNNER_TEMP/site-samples"
@@ -66,7 +68,7 @@ jobs:
       - name: Build a copy containing a deliberately hostile (invalid) record
         run: |
           mkdir "$RUNNER_TEMP/with-hostile"
-          rsync -a --exclude .git --exclude _site --exclude node_modules ./ "$RUNNER_TEMP/with-hostile/"
+          rsync -a --exclude .git --exclude _site --exclude node_modules "$RUNNER_TEMP/without-records/" "$RUNNER_TEMP/with-hostile/"
           cp tools/test/fixtures/hostile/hostile-record.yml "$RUNNER_TEMP/with-hostile/_data/meetings/"
           bundle exec jekyll build --source "$RUNNER_TEMP/with-hostile" --destination "$RUNNER_TEMP/site-hostile"
 
