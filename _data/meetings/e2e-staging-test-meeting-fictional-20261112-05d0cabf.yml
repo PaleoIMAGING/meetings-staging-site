@@ -1,0 +1,19 @@
+# Proposed through the meetings submission form (request 8aba47f3f69686b7).
+# Awaiting maintainer review; remove these two comment lines when approving.
+schema_version: 2
+id: "e2e-staging-test-meeting-fictional-20261112-05d0cabf"
+title: "E2E staging test meeting (fictional)"
+description: "Fictional staging test. Not a real meeting."
+wgs:
+  - "wg2"
+type: "wg-meeting"
+format: "online"
+start: "2026-11-12T10:00"
+end: "2026-11-12T11:00"
+timezone: "Europe/Warsaw"
+platform: "Zoom"
+access: "public"
+url: "https://example.org/join/e2e-test"
+organizers:
+  - name: "A. Tester"
+    affiliation: "Example University"

@@ -6,4 +6,30 @@ METHOD:PUBLISH
 X-WR-CALNAME:PaleoIMAGING meetings
 REFRESH-INTERVAL;VALUE=DURATION:P1D
 X-PUBLISHED-TTL:P1D
+BEGIN:VTIMEZONE
+TZID:Europe/Warsaw
+BEGIN:STANDARD
+DTSTART:20261110T100000
+TZOFFSETFROM:+0100
+TZOFFSETTO:+0100
+TZNAME:GMT+1
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:e2e-staging-test-meeting-fictional-20261112-05d0cabf@paleoimaging.githu
+ b.io
+DTSTAMP:20261009T014328Z
+SEQUENCE:0
+DTSTART;TZID=Europe/Warsaw:20261112T100000
+DTEND;TZID=Europe/Warsaw:20261112T110000
+SUMMARY:E2E staging test meeting (fictional)
+DESCRIPTION:Fictional staging test. Not a real meeting.\n\nhttps://paleoima
+ ging.github.io/meetings/#e2e-staging-test-meeting-fictional-20261112-05d0c
+ abf
+LOCATION:Online (Zoom)
+CATEGORIES:WG2
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+URL:https://example.org/join/e2e-test
+END:VEVENT
 END:VCALENDAR
