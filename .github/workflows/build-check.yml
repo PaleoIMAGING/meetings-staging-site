@@ -38,10 +38,18 @@ jobs:
         run: npm ci
         working-directory: tools
 
-      - name: Build the site as published (no sample records)
-        run: bundle exec jekyll build --destination "$RUNNER_TEMP/site-empty"
+      # The empty-state checks must not depend on what is currently published, so they run
+      # against a temporary copy with every meeting record removed and the feed regenerated
+      # from zero records. The real repository data is checked separately below.
+      - name: Build a copy with no meeting records (empty-state fixture)
+        run: |
+          mkdir "$RUNNER_TEMP/without-records"
+          rsync -a --exclude .git --exclude _site --exclude node_modules ./ "$RUNNER_TEMP/without-records/"
+          rm -f "$RUNNER_TEMP"/without-records/_data/meetings/*.yml "$RUNNER_TEMP"/without-records/_data/meetings/*.yaml
+          node tools/build-ics.mjs --dir "$RUNNER_TEMP/without-records/_data/meetings" --out "$RUNNER_TEMP/without-records/meetings/feed.ics"
+          bundle exec jekyll build --source "$RUNNER_TEMP/without-records" --destination "$RUNNER_TEMP/site-empty"
 
-      - name: Check the published build (empty state, homepage unchanged, valid feed)
+      - name: Check the empty-state fixture build (empty state, homepage unchanged, valid feed)
         run: node tools/site-test.mjs "$RUNNER_TEMP/site-empty" --empty
 
       - name: Build a copy containing the sample fixtures
@@ -67,3 +75,9 @@ jobs:
 
       - name: Check the submission form (conditional fields, validation, accessibility, privacy, disabled submit)
         run: node tools/form-test.mjs "$RUNNER_TEMP/site-empty"
+
+      - name: Build the real repository data (published records and committed feed)
+        run: bundle exec jekyll build --destination "$RUNNER_TEMP/site-published"
+
+      - name: Check that every published record is in the page data and in the committed feed
+        run: node tools/site-test.mjs "$RUNNER_TEMP/site-published" --published

@@ -1,16 +1,18 @@
 // Checks a BUILT site (the _site directory produced by Jekyll).
 //   node site-test.mjs <_site dir> --empty     the published configuration: no records
 //   node site-test.mjs <_site dir> --samples   built with the test fixtures copied in
+//   node site-test.mjs <_site dir> --published the real repository data: every record is on the page and in the feed
+// (--empty must be run against a build that has no records; the workflow builds a temporary copy for it.)
 // Runs the real page scripts in jsdom at a fixed clock (2026-10-08 12:00 UTC).
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import ICAL from "ical.js";
 import { JSDOM, VirtualConsole } from "jsdom";
-import { siteRoot } from "./lib.mjs";
+import { siteRoot, readRecords, recordsDir } from "./lib.mjs";
 
 const dir = resolve(process.argv[2] || "");
-const mode = process.argv.includes("--samples") ? "samples" : process.argv.includes("--hostile") ? "hostile" : "empty";
+const mode = process.argv.includes("--samples") ? "samples" : process.argv.includes("--hostile") ? "hostile" : process.argv.includes("--published") ? "published" : "empty";
 const read = (p) => readFileSync(join(dir, p), "utf8");
 const FIXED = Date.UTC(2026, 9, 8, 12);
 let checks = 0;
@@ -64,6 +66,25 @@ if (mode === "hostile") {
   ok(w.__pwned === undefined, "script from data ran");
   const links = [...w.document.querySelectorAll("#meeting-list a")].map((a) => a.href);
   ok(links.every((h) => h.startsWith("https://")), "non-https link rendered");
+} else if (mode === "published") {
+  // Works for any number of records, including none: every record in _data/meetings must be
+  // in the embedded page data and in the committed feed, and nothing else may be in either.
+  const recs = readRecords(recordsDir());
+  ok(recs.every((r) => !r.parseError), "a record failed to parse");
+  const m = html.match(/<script type="application\/json" id="meetings-data">([\s\S]*?)<\/script>/);
+  ok(m && !m[1].includes("<"), "embedded data block missing or unescaped");
+  const pageIds = JSON.parse(m[1]).meetings.map((x) => x.id).sort();
+  ok(JSON.stringify(pageIds) === JSON.stringify(recs.map((r) => r.id).sort()), "page data differs from the records: " + pageIds.join(","));
+  const unfolded = feed.replace(/\r\n[ \t]/g, "");
+  const uids = [...unfolded.matchAll(/^UID:(.*)\r$/gm)].map((x) => x[1]);
+  const forRecord = (u, id) => u.startsWith(id + "@") || u.startsWith(id + "-");
+  for (const r of recs) ok(uids.some((u) => forRecord(u, r.id)), "record missing from feed: " + r.id);
+  ok(uids.every((u) => recs.some((r) => forRecord(u, r.id))), "feed contains an event with no record");
+  ok(!/\[SAMPLE\]|Sample data/.test(html + feed), "sample data leaked into the published site");
+  const w = load("https://paleoimaging.github.io/meetings/", html);
+  w.document.querySelector('[data-view="all"]')?.click();
+  ok(recs.length === 0 || titles(w).length > 0, "records exist but no cards were rendered");
+  console.log("records checked: " + recs.length);
 } else if (mode === "empty") {
   ok(nEvents === 0, "published feed must contain no events");
   ok(!/\[SAMPLE\]|Sample data/.test(html + feed), "sample data leaked into the published site");
