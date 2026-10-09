@@ -9,7 +9,8 @@
 # Compatibility rule: never delete or rename an id that existing records use.
 # Retire it instead (`active: false`); retired ids stay valid for old records.
 
-schema_version: 1
+# Version 2 added the optional `platform` field. Version 1 records stay valid.
+schema_version: 2
 
 # Working Groups. "general" is for events not tied to a single WG.
 # `exclusive: true` means the id cannot be combined with other ids.
@@ -46,20 +47,22 @@ types:
 
 # `requires` lists dotted field paths that must be present for this format.
 formats:
-  - { id: online,    label: "Online",    requires: [] }
-  - { id: in-person, label: "In person", requires: [location.venue, location.city, location.country] }
-  - { id: hybrid,    label: "Hybrid",    requires: [location.venue, location.city, location.country] }
+  - { id: online,    label: "Online",    requires: [], help: "Everyone takes part remotely." }
+  - { id: in-person, label: "In person", requires: [location.venue, location.city, location.country], help: "Everyone meets at a physical venue." }
+  - { id: hybrid,    label: "Hybrid",    requires: [location.venue, location.city, location.country], help: "A physical venue, with online participation as well." }
 
 # How participants get in. Public records never contain private links.
-#   public       - `url` may be published (online and hybrid events)
+#   public       - `url` may be published (online and hybrid events). In-person
+#                  meetings have no join link, so none is required for them
+#                  (`requires_skip_formats`).
 #   registration - only `registration_url` (a sign-up page) is published
 #   private      - nothing but `access_note` is published (for example
 #                  "Link sent to WG1 members"); the real link is shared
 #                  outside the repository
 access:
-  - { id: public,       label: "Open: join link published", requires: [url] }
-  - { id: registration, label: "Registration required",    requires: [registration_url] }
-  - { id: private,      label: "Invitation only",           requires: [access_note] }
+  - { id: public,       label: "Open to everyone",          requires: [url], requires_skip_formats: [in-person], help: "Anyone can attend. The meeting link is published on the calendar." }
+  - { id: registration, label: "Registration required",    requires: [registration_url], help: "Participants sign up first. Only the address of the registration page is published, never the join link." }
+  - { id: private,      label: "Invitation only",           requires: [access_note], help: "Only invited people attend. Just a short note (for example \"Link sent to WG1 members\") is published. Send the join link to participants yourself; never put it in this form." }
 
 statuses:
   - { id: scheduled, label: "Scheduled", ics_status: CONFIRMED }
@@ -77,7 +80,7 @@ recurrence:
 # Organizer contact details are deliberately NOT part of the public schema.
 fields:
   required: [schema_version, id, title, wgs, type, format, start, end, timezone, access, organizers]
-  optional: [description, status, location, recurrence, url, registration_url, access_note, links, language, sample]
+  optional: [description, status, platform, location, recurrence, url, registration_url, access_note, links, language, sample]
 
 limits:
   title: 120
@@ -93,6 +96,57 @@ limits:
   city: 80
   country: 80
   address: 200
+  platform: 60
+  recurrence_exceptions: 100
+
+# Privacy guards applied to every free-text field (title, description,
+# organizer, location, platform, access note). Join links and contact details
+# have dedicated, reviewed places; they must not leak into prose.
+privacy:
+  block_emails: true
+  block_urls_in_text: true
+
+# Time zones offered in the submission form (IANA id, shown with its common
+# name). Any other IANA zone can still be typed in. Add or remove entries freely.
+timezones:
+  - { group: Universal, id: "UTC", label: "UTC · Coordinated Universal Time" }
+  - { group: Europe, id: "Europe/London", label: "London · UK time (GMT/BST)" }
+  - { group: Europe, id: "Europe/Lisbon", label: "Lisbon · Western European Time" }
+  - { group: Europe, id: "Europe/Paris", label: "Paris · Central European Time (CET/CEST)" }
+  - { group: Europe, id: "Europe/Berlin", label: "Berlin · Central European Time (CET/CEST)" }
+  - { group: Europe, id: "Europe/Rome", label: "Rome · Central European Time (CET/CEST)" }
+  - { group: Europe, id: "Europe/Warsaw", label: "Warsaw / Gdańsk · Central European Time (CET/CEST)" }
+  - { group: Europe, id: "Europe/Athens", label: "Athens · Eastern European Time (EET/EEST)" }
+  - { group: Europe, id: "Europe/Helsinki", label: "Helsinki · Eastern European Time (EET/EEST)" }
+  - { group: Europe, id: "Europe/Moscow", label: "Moscow · Moscow Time (MSK)" }
+  - { group: Africa, id: "Africa/Lagos", label: "Lagos · West Africa Time (WAT)" }
+  - { group: Africa, id: "Africa/Cairo", label: "Cairo · Eastern European Time (EET/EEST)" }
+  - { group: Africa, id: "Africa/Johannesburg", label: "Johannesburg · South Africa Standard Time (SAST)" }
+  - { group: Africa, id: "Africa/Nairobi", label: "Nairobi · East Africa Time (EAT)" }
+  - { group: Asia, id: "Asia/Dubai", label: "Dubai · Gulf Standard Time (GST)" }
+  - { group: Asia, id: "Asia/Karachi", label: "Karachi · Pakistan Standard Time (PKT)" }
+  - { group: Asia, id: "Asia/Kolkata", label: "India · India Standard Time (IST)" }
+  - { group: Asia, id: "Asia/Dhaka", label: "Dhaka · Bangladesh Standard Time (BST)" }
+  - { group: Asia, id: "Asia/Bangkok", label: "Bangkok · Indochina Time (ICT)" }
+  - { group: Asia, id: "Asia/Shanghai", label: "China · China Standard Time (CST)" }
+  - { group: Asia, id: "Asia/Singapore", label: "Singapore · Singapore Standard Time (SGT)" }
+  - { group: Asia, id: "Asia/Tokyo", label: "Tokyo · Japan Standard Time (JST)" }
+  - { group: Asia, id: "Asia/Seoul", label: "Seoul · Korea Standard Time (KST)" }
+  - { group: Oceania, id: "Australia/Perth", label: "Perth · Australian Western Standard Time (AWST)" }
+  - { group: Oceania, id: "Australia/Sydney", label: "Sydney · Australian Eastern Time (AEST/AEDT)" }
+  - { group: Oceania, id: "Pacific/Auckland", label: "Auckland · New Zealand Time (NZST/NZDT)" }
+  - { group: Americas, id: "Pacific/Honolulu", label: "Honolulu · Hawaii Standard Time (HST)" }
+  - { group: Americas, id: "America/Anchorage", label: "Anchorage · Alaska Time (AKST/AKDT)" }
+  - { group: Americas, id: "America/Los_Angeles", label: "Los Angeles · US Pacific Time (PST/PDT)" }
+  - { group: Americas, id: "America/Denver", label: "Denver · US Mountain Time (MST/MDT)" }
+  - { group: Americas, id: "America/Chicago", label: "Chicago · US Central Time (CST/CDT)" }
+  - { group: Americas, id: "America/Mexico_City", label: "Mexico City · Central Standard Time (CST)" }
+  - { group: Americas, id: "America/New_York", label: "New York · US Eastern Time (EST/EDT)" }
+  - { group: Americas, id: "America/Halifax", label: "Halifax · Atlantic Time (AST/ADT)" }
+  - { group: Americas, id: "America/Bogota", label: "Bogotá · Colombia Time (COT)" }
+  - { group: Americas, id: "America/Santiago", label: "Santiago · Chile Time (CLT/CLST)" }
+  - { group: Americas, id: "America/Sao_Paulo", label: "São Paulo / Rio de Janeiro · Brasília Time (BRT)" }
+  - { group: Americas, id: "America/Argentina/Buenos_Aires", label: "Buenos Aires · Argentina Time (ART)" }
 
 # Page and calendar presentation.
 ui:
@@ -105,3 +159,5 @@ ui:
     enabled: false                # switched on when the submission portal exists
     url: ""
     message: "Online meeting submission is being prepared and will open here."
+    endpoint: ""                  # Worker URL; empty keeps the form review-only
+    form_notice: "Submissions are not enabled yet. You can fill in and review the form, but nothing is sent."

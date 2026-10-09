@@ -1,0 +1,267 @@
+---
+layout: default
+title: Propose a meeting
+description: Propose a PaleoIMAGING Working Group meeting, workshop or community event for the public calendar.
+permalink: /meetings/submit/
+noindex: true   # remove when the submission portal is announced
+---
+{%- assign cfg = site.data.meetings_config -%}
+{%- assign lim = cfg.limits -%}
+<p class="crumb"><a href="{{ '/meetings/' | relative_url }}">&larr; Meetings calendar</a></p>
+<h1>Propose a meeting</h1>
+<p class="lead">Use this form to propose a Working Group meeting, workshop or community event for the PaleoIMAGING calendar. <strong>Every proposal is reviewed and approved by administrators before it is published.</strong> Nothing appears on the calendar until then.</p>
+
+<p class="banner banner--info" role="status" id="submission-status">{{ cfg.ui.submission.form_notice | escape }}</p>
+
+<noscript>
+  <p class="banner" role="alert">This form needs JavaScript to check your answers and show a preview. Submissions are not enabled yet in any case.</p>
+</noscript>
+
+<div class="error-summary" id="error-summary" role="alert" tabindex="-1" hidden>
+  <h2 id="error-summary-title">Please fix the following</h2>
+  <ul id="error-summary-list"></ul>
+</div>
+
+<form id="submit-form" class="form" novalidate autocomplete="off">
+  <p class="form-note"><span aria-hidden="true">*</span> marks a required field. Do not enter email addresses, phone numbers or private meeting links anywhere in this form.</p>
+
+  <!-- 1. Meeting information -->
+  <section class="form-section" aria-labelledby="s1-title">
+    <h2 id="s1-title"><span class="step" aria-hidden="true">1</span> Meeting information</h2>
+
+    {% include form-field.html key="title" label="Meeting title" max=lim.title hint="A short, descriptive name." %}
+    {% include form-field.html key="description" label="Description" type="textarea" rows=5 max=lim.description counter=true hint="Plain text: what the meeting is for and who it is for. Links belong in the dedicated link fields below." %}
+
+    <div class="field" data-field="type">
+      <label for="f-type">Meeting type<span class="req" aria-hidden="true"> *</span><span class="sr-only req-sr"></span></label>
+      <select id="f-type" name="type" aria-describedby="e-type">
+        <option value="">Select a type&hellip;</option>
+        {%- for t in cfg.types %}{% unless t.active == false %}
+        <option value="{{ t.id | escape }}">{{ t.label | escape }}</option>
+        {%- endunless %}{% endfor %}
+      </select>
+      <p class="error" id="e-type" data-error-for="type" hidden></p>
+    </div>
+
+    <fieldset class="field group" data-field="wgs" id="f-wgs" data-group="wgs" aria-describedby="h-wgs e-wgs">
+      <legend>Working Group(s)<span class="req" aria-hidden="true"> *</span><span class="sr-only req-sr"></span></legend>
+      <p class="hint" id="h-wgs">Choose one or more groups, or &ldquo;General community&rdquo; for events that are not tied to a single group.</p>
+      <div class="choices choices--inline">
+        {%- for w in cfg.wgs %}{% unless w.active == false %}
+        <label class="choice choice--check"><input type="checkbox" name="wgs" value="{{ w.id | escape }}"{% if w.exclusive %} data-exclusive="true"{% endif %}><span>{{ w.label | escape }}</span></label>
+        {%- endunless %}{% endfor %}
+      </div>
+      <p class="error" id="e-wgs" data-error-for="wgs" hidden></p>
+    </fieldset>
+  </section>
+
+  <!-- 2. Date & Time -->
+  <section class="form-section" aria-labelledby="s2-title">
+    <h2 id="s2-title"><span class="step" aria-hidden="true">2</span> Date &amp; Time</h2>
+
+    <div class="grid grid--3">
+      {% include form-field.html key="date" label="Date" type="date" %}
+      {% include form-field.html key="startTime" label="Start time" type="time" %}
+      {% include form-field.html key="endTime" label="End time" type="time" %}
+    </div>
+
+    <div class="field field--check" data-field="multiDay">
+      <label class="choice choice--check"><input type="checkbox" name="multiDay" id="f-multiDay"><span>This meeting ends on a different day</span></label>
+    </div>
+    <div class="grid grid--3" data-show="endDate" hidden>
+      {% include form-field.html key="endDate" label="End date" type="date" %}
+    </div>
+
+    <div class="field" data-field="timezone">
+      <label for="f-timezone">Time zone<span class="req" aria-hidden="true"> *</span><span class="sr-only req-sr"></span></label>
+      <p class="hint" id="h-timezone">Enter the times as they will be <em>in this time zone</em> (usually where the meeting is held, or the organizers&rsquo; home zone). Visitors see the time converted to their own zone.</p>
+      <select id="f-timezone" name="timezone" aria-describedby="h-timezone tz-hint e-timezone">
+        <option value="">Select a time zone&hellip;</option>
+        {%- assign groups = cfg.timezones | map: "group" | uniq %}
+        {%- for g in groups %}
+        <optgroup label="{{ g | escape }}">
+          {%- for z in cfg.timezones %}{% if z.group == g %}
+          <option value="{{ z.id | escape }}">{{ z.label | escape }}</option>
+          {%- endif %}{% endfor %}
+        </optgroup>
+        {%- endfor %}
+        <option value="__other__">Other&hellip; (type a time zone name)</option>
+      </select>
+      <p class="hint hint--live" id="tz-hint" aria-live="polite"></p>
+      <button type="button" class="link-btn" id="tz-detect" hidden>Use my browser&rsquo;s time zone</button>
+      <p class="error" id="e-timezone" data-error-for="timezone" hidden></p>
+    </div>
+    <div data-show="tzOther" hidden>
+      {% include form-field.html key="tzOther" label="Time zone name" max=60 hint="An IANA name such as Africa/Nairobi or America/Halifax. See the list of time zone names on Wikipedia." %}
+      <p class="hint"><a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank" rel="noopener noreferrer">List of tz database time zones</a></p>
+    </div>
+
+    <fieldset class="field group" data-field="recurrence" id="f-recurrence">
+      <legend>Repeats</legend>
+      <div class="grid grid--2">
+        <div class="field" data-field="recFreq">
+          <label for="f-recFreq">Frequency</label>
+          <select id="f-recFreq" name="recFreq" aria-describedby="e-recFreq">
+            <option value="none">Does not repeat</option>
+            {%- for f in cfg.recurrence.freqs %}
+            <option value="{{ f | escape }}">{% if f == "daily" %}Every day{% elsif f == "weekly" %}Every week{% elsif f == "monthly" %}Every month{% else %}{{ f | escape }}{% endif %}</option>
+            {%- endfor %}
+          </select>
+          <p class="error" id="e-recFreq" data-error-for="recFreq" hidden></p>
+        </div>
+        <div data-show="recInterval" hidden>
+          {% include form-field.html key="recInterval" label="Repeat every" type="number" min=1 hint="Number of days, weeks or months between meetings." %}
+          <p class="hint hint--live" id="rec-unit" aria-live="polite"></p>
+        </div>
+      </div>
+
+      <fieldset class="field group" data-field="recEnd" id="f-recEnd" data-group="recEnd" data-show="recEnd" aria-describedby="e-recEnd" hidden>
+        <legend>The series ends<span class="req" aria-hidden="true"> *</span><span class="sr-only req-sr"></span></legend>
+        <div class="choices choices--inline">
+          <label class="choice choice--check"><input type="radio" name="recEnd" value="count" checked><span>After a number of meetings</span></label>
+          <label class="choice choice--check"><input type="radio" name="recEnd" value="until"><span>On a date</span></label>
+        </div>
+        <div class="grid grid--2">
+          <div data-show="recCount">{% include form-field.html key="recCount" label="Number of meetings" type="number" min=1 hint="Including the first one." %}</div>
+          <div data-show="recUntil" hidden>{% include form-field.html key="recUntil" label="Last possible date" type="date" hint="The series stops after this date." %}</div>
+        </div>
+        <p class="error" id="e-recEnd" data-error-for="recEnd" hidden></p>
+      </fieldset>
+
+      <fieldset class="field group" data-field="recByday" id="f-recByday" data-group="recByday" data-show="recByday" aria-describedby="h-recByday e-recByday" hidden>
+        <legend>On these weekdays <span class="optional">(optional)</span></legend>
+        <p class="hint" id="h-recByday">Leave empty to repeat on the same weekday as the first meeting.</p>
+        <div class="choices choices--inline choices--days">
+          <label class="choice choice--check"><input type="checkbox" name="recByday" value="MO"><span>Mon</span></label>
+          <label class="choice choice--check"><input type="checkbox" name="recByday" value="TU"><span>Tue</span></label>
+          <label class="choice choice--check"><input type="checkbox" name="recByday" value="WE"><span>Wed</span></label>
+          <label class="choice choice--check"><input type="checkbox" name="recByday" value="TH"><span>Thu</span></label>
+          <label class="choice choice--check"><input type="checkbox" name="recByday" value="FR"><span>Fri</span></label>
+          <label class="choice choice--check"><input type="checkbox" name="recByday" value="SA"><span>Sat</span></label>
+          <label class="choice choice--check"><input type="checkbox" name="recByday" value="SU"><span>Sun</span></label>
+        </div>
+        <p class="error" id="e-recByday" data-error-for="recByday" hidden></p>
+      </fieldset>
+
+      <div data-show="recExceptions" hidden>
+        {% include form-field.html key="recExceptions" label="Skipped dates (optional)" type="textarea" rows=2 hint="Dates with no meeting, as YYYY-MM-DD, separated by spaces or new lines." %}
+      </div>
+    </fieldset>
+  </section>
+
+  <!-- 3. Location & Access -->
+  <section class="form-section" aria-labelledby="s3-title">
+    <h2 id="s3-title"><span class="step" aria-hidden="true">3</span> Location &amp; Access</h2>
+
+    <fieldset class="field group" data-field="format" id="f-format" data-group="format" aria-describedby="e-format">
+      <legend>Format<span class="req" aria-hidden="true"> *</span><span class="sr-only req-sr"></span></legend>
+      <div class="choices">
+        {%- for f in cfg.formats %}
+        <label class="choice choice--card"><input type="radio" name="format" value="{{ f.id | escape }}"><span><strong>{{ f.label | escape }}</strong><small>{{ f.help | escape }}</small></span></label>
+        {%- endfor %}
+      </div>
+      <p class="error" id="e-format" data-error-for="format" hidden></p>
+    </fieldset>
+
+    <div data-show="location" hidden>
+      <div class="grid grid--2">
+        {% include form-field.html key="venue" label="Venue (building or institution)" max=lim.venue %}
+        {% include form-field.html key="city" label="City" max=lim.city %}
+        {% include form-field.html key="country" label="Country" max=lim.country %}
+        {% include form-field.html key="address" label="Street address (optional)" max=lim.address %}
+      </div>
+    </div>
+
+    <div data-show="platform" hidden>
+      {% include form-field.html key="platform" label="Online platform (optional)" max=lim.platform hint="For example Zoom, Microsoft Teams or Google Meet. Name only, not a link." %}
+    </div>
+
+    <fieldset class="field group" data-field="access" id="f-access" data-group="access" aria-describedby="h-access e-access">
+      <legend>Who can take part?<span class="req" aria-hidden="true"> *</span><span class="sr-only req-sr"></span></legend>
+      <p class="hint" id="h-access">This decides what is published on the calendar. <strong>Private join links are never published.</strong></p>
+      <div class="choices">
+        {%- for a in cfg.access %}
+        <label class="choice choice--card"><input type="radio" name="access" value="{{ a.id | escape }}"><span><strong>{{ a.label | escape }}</strong><small>{{ a.help | escape }}</small></span></label>
+        {%- endfor %}
+      </div>
+      <p class="error" id="e-access" data-error-for="access" hidden></p>
+    </fieldset>
+
+    <div data-show="url" hidden>
+      {% include form-field.html key="url" label="Public meeting link" type="url" max=lim.url hint="This link will be PUBLIC on the calendar. Only enter it if anyone may use it." %}
+    </div>
+    <div data-show="registrationUrl" hidden>
+      {% include form-field.html key="registrationUrl" label="Registration page" type="url" max=lim.url hint="The page where people sign up. Do not enter the join link here." %}
+    </div>
+    <div data-show="accessNote" hidden>
+      {% include form-field.html key="accessNote" label="Note for visitors" max=lim.access_note hint="For example “Link sent to WG1 members”. Do not include the join link, email addresses or web addresses." %}
+    </div>
+  </section>
+
+  <!-- 4. Organizer -->
+  <section class="form-section" aria-labelledby="s4-title">
+    <h2 id="s4-title"><span class="step" aria-hidden="true">4</span> Organizer</h2>
+    <p class="hint">Names and institutions are shown publicly. <strong>We do not collect email addresses or other contact details in this version.</strong></p>
+
+    <div id="organizers" data-field="organizers"></div>
+    <p class="error" id="e-organizers" data-error-for="organizers" hidden></p>
+    <button type="button" class="btn btn--ghost" id="add-organizer">Add another organizer</button>
+
+    <template id="organizer-template">
+      <fieldset class="organizer" data-organizer="__N__">
+        <legend class="organizer__title">Organizer <span class="organizer__num"></span></legend>
+        <div class="grid grid--2">
+          <div class="field" data-field="org-__N__-name">
+            <label for="f-org-__N__-name">Name<span class="req" aria-hidden="true"> *</span><span class="sr-only req-sr"></span></label>
+            <input id="f-org-__N__-name" name="org-__N__-name" type="text" maxlength="{{ lim.organizer_name }}" autocomplete="off" aria-describedby="e-org-__N__-name">
+            <p class="error" id="e-org-__N__-name" data-error-for="org-__N__-name" hidden></p>
+          </div>
+          <div class="field" data-field="org-__N__-affiliation">
+            <label for="f-org-__N__-affiliation">Affiliation <span class="optional">(optional)</span></label>
+            <input id="f-org-__N__-affiliation" name="org-__N__-affiliation" type="text" maxlength="{{ lim.organizer_affiliation }}" autocomplete="off" aria-describedby="e-org-__N__-affiliation">
+            <p class="error" id="e-org-__N__-affiliation" data-error-for="org-__N__-affiliation" hidden></p>
+          </div>
+        </div>
+        <button type="button" class="link-btn organizer__remove">Remove this organizer</button>
+      </fieldset>
+    </template>
+  </section>
+
+  <!-- Spam trap for the future Worker; real users never see or fill it. -->
+  <div class="hp" aria-hidden="true">
+    <label>Leave this field empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+  </div>
+
+  <div class="btn-row">
+    <button type="submit" class="btn" id="review-btn">Review proposal</button>
+    <button type="button" class="btn btn--ghost" id="clear-btn">Clear form</button>
+    <span class="count" id="form-status" role="status" aria-live="polite"></span>
+  </div>
+</form>
+
+<section class="form-section review" id="review-panel" aria-labelledby="review-title" hidden>
+  <h2 id="review-title" tabindex="-1">Review your proposal</h2>
+  <p>This is how your meeting will appear on the calendar once an administrator approves it.</p>
+  <p class="banner" id="past-warning" role="note" hidden>The start time is in the past. Please check the date.</p>
+  <ol class="list" id="preview-list"></ol>
+
+  <details class="raw">
+    <summary>Data that would be sent</summary>
+    <p class="hint">Exactly these public fields, and nothing else. The identifier is provisional; administrators assign the final one.</p>
+    <pre id="record-json" tabindex="0"></pre>
+  </details>
+
+  <p class="banner banner--info" id="submit-disabled-note">{{ cfg.ui.submission.form_notice | escape }}</p>
+  <div class="btn-row">
+    <button type="button" class="btn btn--ghost" id="edit-btn">Edit proposal</button>
+    <button type="button" class="btn" id="submit-btn" disabled aria-disabled="true" aria-describedby="submit-disabled-note">Submit for approval (not enabled yet)</button>
+  </div>
+</section>
+
+<script type="application/json" id="meetings-data">{"config":{{ cfg | jsonify | replace: "<", "\u003c" }},"meetings":[]}</script>
+<script src="{{ '/assets/js/meetings-core.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/meetings-validate.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/meetings-ics.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/meetings-render.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/meetings-form-model.js' | relative_url }}"></script>
+<script src="{{ '/assets/js/meetings-form.js' | relative_url }}"></script>

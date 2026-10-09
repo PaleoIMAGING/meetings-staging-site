@@ -64,3 +64,6 @@ jobs:
 
       - name: Check that hostile data is neutralised by the page itself
         run: node tools/site-test.mjs "$RUNNER_TEMP/site-hostile" --hostile
+
+      - name: Check the submission form (conditional fields, validation, accessibility, privacy, disabled submit)
+        run: node tools/form-test.mjs "$RUNNER_TEMP/site-empty"

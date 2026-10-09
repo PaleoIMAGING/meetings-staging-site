@@ -50,7 +50,7 @@ test("shared files contain no Node, DOM or network dependencies", () => {
 test("the configuration is plain data a Worker can load (JSON round-trip)", () => {
   const config = loadConfig();
   assert.deepEqual(JSON.parse(JSON.stringify(config)), config);
-  assert.equal(config.schema_version, 1);
+  assert.equal(config.schema_version, 2);
 });
 
 test("committed shared-manifest.json matches the shared files", () => {
@@ -69,10 +69,12 @@ test("YAML config parses to the same object the validator was tested with", () =
   assert.ok(core && ics);
 });
 
-test("inline JSON in the calendar page escapes < (a decoded escape once made this a silent no-op)", () => {
+test("inline JSON in every page escapes < (a decoded escape once made this a silent no-op)", () => {
   const esc = String.fromCharCode(92) + "u003c";
-  const src = read("meetings/index.html");
-  const uses = src.split("jsonify | replace: \"<\", \"").length - 1;
-  assert.ok(uses >= 1, "page embeds JSON");
-  assert.equal(src.split("jsonify | replace: \"<\", \"" + esc + "\"").length - 1, uses, "every embedded JSON blob must escape <");
+  for (const page of ["meetings/index.html", "meetings/submit/index.html"]) {
+    const src = read(page);
+    const uses = src.split("jsonify | replace: \"<\", \"").length - 1;
+    assert.ok(uses >= 1, page + " embeds JSON");
+    assert.equal(src.split("jsonify | replace: \"<\", \"" + esc + "\"").length - 1, uses, page + " must escape every embedded JSON blob");
+  }
 });

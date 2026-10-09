@@ -44,7 +44,7 @@ function load(url, dom_html) {
   const w = dom.window;
   w.eval(`Date.now = () => ${FIXED};`);
   w.Element.prototype.scrollIntoView = function () {};
-  for (const f of ["meetings-core.js", "meetings-ics.js", "meetings-page.js"]) w.eval(readFileSync(join(siteRoot, "assets/js", f), "utf8"));
+  for (const f of ["meetings-core.js", "meetings-ics.js", "meetings-render.js", "meetings-page.js"]) w.eval(readFileSync(join(siteRoot, "assets/js", f), "utf8"));
   return w;
 }
 const titles = (w) => [...w.document.querySelectorAll("#meeting-list .card h2")].map((h) => h.textContent);

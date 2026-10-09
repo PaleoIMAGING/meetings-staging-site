@@ -1,6 +1,6 @@
 # Deliberately INVALID record. It never passes validation; the sample CI build
 # injects it after validation to prove the page escapes data on its own.
-schema_version: 1
+schema_version: 2
 id: hostile-record
 title: "</script><script>window.__pwned = 1</script>"
 description: "x </script> <img src=x onerror=alert(1)>"

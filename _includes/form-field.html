@@ -1,0 +1,23 @@
+{%- comment -%}
+  One labelled input with hint and error slot.
+  Parameters: key, label, type (text|textarea|date|time|number|url), hint, max, min, rows, auto, counter
+  Whether the field is required is decided at run time from _data/meetings_config.yml
+  (the .is-required class and aria-required are set by assets/js/meetings-form.js).
+{%- endcomment -%}
+{%- assign t = include.type | default: "text" -%}
+{%- capture described %}{% if include.hint %}h-{{ include.key }} {% endif %}e-{{ include.key }}{% endcapture -%}
+<div class="field" data-field="{{ include.key }}">
+  <label for="f-{{ include.key }}">{{ include.label }}<span class="req" aria-hidden="true"> *</span><span class="sr-only req-sr"></span></label>
+  {%- if include.hint %}
+  <p class="hint" id="h-{{ include.key }}">{{ include.hint }}</p>
+  {%- endif %}
+  {%- if t == "textarea" %}
+  <textarea id="f-{{ include.key }}" name="{{ include.key }}" rows="{{ include.rows | default: 4 }}"{% if include.max %} maxlength="{{ include.max }}"{% endif %} aria-describedby="{{ described }}"></textarea>
+  {%- else %}
+  <input id="f-{{ include.key }}" name="{{ include.key }}" type="{{ t }}"{% if include.max %} maxlength="{{ include.max }}"{% endif %}{% if include.min %} min="{{ include.min }}"{% endif %}{% if t == "number" %} step="1" inputmode="numeric"{% endif %} autocomplete="{{ include.auto | default: 'off' }}" aria-describedby="{{ described }}">
+  {%- endif %}
+  {%- if include.counter %}
+  <p class="counter" id="c-{{ include.key }}" aria-hidden="true"></p>
+  {%- endif %}
+  <p class="error" id="e-{{ include.key }}" data-error-for="{{ include.key }}" hidden></p>
+</div>
