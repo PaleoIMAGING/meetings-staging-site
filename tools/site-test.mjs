@@ -10,7 +10,7 @@ import { JSDOM, VirtualConsole } from "jsdom";
 import { siteRoot } from "./lib.mjs";
 
 const dir = resolve(process.argv[2] || "");
-const mode = process.argv.includes("--samples") ? "samples" : "empty";
+const mode = process.argv.includes("--samples") ? "samples" : process.argv.includes("--hostile") ? "hostile" : "empty";
 const read = (p) => readFileSync(join(dir, p), "utf8");
 const FIXED = Date.UTC(2026, 9, 8, 12);
 let checks = 0;
@@ -49,7 +49,22 @@ function load(url, dom_html) {
 }
 const titles = (w) => [...w.document.querySelectorAll("#meeting-list .card h2")].map((h) => h.textContent);
 
-if (mode === "empty") {
+if (mode === "hostile") {
+  // Unvalidated hostile data injected straight into the build: the page must neutralise it by itself.
+  const m = html.match(/<script type="application\/json" id="meetings-data">([\s\S]*?)<\/script>/);
+  ok(m, "embedded data block missing");
+  ok(!m[1].includes("<"), "unescaped < in embedded JSON");
+  ok(!html.includes("</script><script>window.__pwned"), "script breakout reached the HTML");
+  const data = JSON.parse(m[1]);
+  ok(data.meetings.some((x) => x.title.startsWith("</script>")), "hostile record round-trips as data");
+  const w = load("https://paleoimaging.github.io/meetings/", html);
+  w.document.querySelector('[data-view="all"]').click();
+  ok(titles(w).some((t) => t.startsWith("</script>")), "hostile title is shown as inert text");
+  ok(w.document.querySelectorAll("#meeting-list script, #meeting-list img, #meeting-list b").length === 0, "markup was created from data");
+  ok(w.__pwned === undefined, "script from data ran");
+  const links = [...w.document.querySelectorAll("#meeting-list a")].map((a) => a.href);
+  ok(links.every((h) => h.startsWith("https://")), "non-https link rendered");
+} else if (mode === "empty") {
   ok(nEvents === 0, "published feed must contain no events");
   ok(!/\[SAMPLE\]|Sample data/.test(html + feed), "sample data leaked into the published site");
   const w = load("https://paleoimaging.github.io/meetings/", html);

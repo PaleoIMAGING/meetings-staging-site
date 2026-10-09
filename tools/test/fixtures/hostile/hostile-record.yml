@@ -1,0 +1,16 @@
+# Deliberately INVALID record. It never passes validation; the sample CI build
+# injects it after validation to prove the page escapes data on its own.
+schema_version: 1
+id: hostile-record
+title: "</script><script>window.__pwned = 1</script>"
+description: "x </script> <img src=x onerror=alert(1)>"
+wgs: [wg1]
+type: workshop
+format: online
+start: "2027-03-01T10:00"
+end: "2027-03-01T11:00"
+timezone: "UTC"
+access: public
+url: "https://example.org/?q=</script><script>window.__pwned=2</script>"
+organizers:
+  - name: "<b>x</b>"

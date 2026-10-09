@@ -68,3 +68,11 @@ test("YAML config parses to the same object the validator was tested with", () =
   assert.deepEqual(YAML.parse(read("_data/meetings_config.yml")), loadConfig());
   assert.ok(core && ics);
 });
+
+test("inline JSON in the calendar page escapes < (a decoded escape once made this a silent no-op)", () => {
+  const esc = String.fromCharCode(92) + "u003c";
+  const src = read("meetings/index.html");
+  const uses = src.split("jsonify | replace: \"<\", \"").length - 1;
+  assert.ok(uses >= 1, "page embeds JSON");
+  assert.equal(src.split("jsonify | replace: \"<\", \"" + esc + "\"").length - 1, uses, "every embedded JSON blob must escape <");
+});
