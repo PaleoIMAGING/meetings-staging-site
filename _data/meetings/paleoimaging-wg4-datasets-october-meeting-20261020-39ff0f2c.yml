@@ -1,0 +1,19 @@
+schema_version: 2
+id: "paleoimaging-wg4-datasets-october-meeting-20261020-39ff0f2c"
+title: "PaleoIMAGING WG4 – Datasets | October Meeting"
+description: "Follow-up meeting of the PaleoIMAGING Working Group 4 (Datasets), building on the discussions and outcomes of the Gdańsk workshop."
+wgs:
+  - "wg4"
+type: "wg-meeting"
+format: "online"
+start: "2026-10-20T14:00"
+end: "2026-10-20T15:00"
+timezone: "Europe/Warsaw"
+platform: "Zoom"
+access: "public"
+url: "https://maine.zoom.us/j/88619372240"
+organizers:
+  - name: "Jennifer Burck"
+    affiliation: "uni-mainz.de"
+  - name: "Pim Kaskes"
+    affiliation: "Natural History Museum"
