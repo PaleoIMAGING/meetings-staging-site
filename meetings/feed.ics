@@ -15,6 +15,33 @@ TZOFFSETTO:+0100
 TZNAME:GMT+1
 END:STANDARD
 END:VTIMEZONE
+BEGIN:VTIMEZONE
+TZID:Europe/Warsaw
+BEGIN:STANDARD
+DTSTART:20261018T140000
+TZOFFSETFROM:+0200
+TZOFFSETTO:+0200
+TZNAME:GMT+2
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:paleoimaging-wg4-datasets-october-meeting-20261020-39ff0f2c@paleoimagin
+ g.github.io
+DTSTAMP:20261009T121850Z
+SEQUENCE:0
+DTSTART;TZID=Europe/Warsaw:20261020T140000
+DTEND;TZID=Europe/Warsaw:20261020T150000
+SUMMARY:PaleoIMAGING WG4 – Datasets | October Meeting
+DESCRIPTION:Follow-up meeting of the PaleoIMAGING Working Group 4 (Datasets
+ )\, building on the discussions and outcomes of the Gdańsk workshop.\n\nh
+ ttps://paleoimaging.github.io/meetings/#paleoimaging-wg4-datasets-october-
+ meeting-20261020-39ff0f2c
+LOCATION:Online (Zoom)
+CATEGORIES:WG4
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+URL:https://maine.zoom.us/j/88619372240
+END:VEVENT
 BEGIN:VEVENT
 UID:regular-sc-and-wg-leads-meeting-20261112-478b972f@paleoimaging.github.i
  o
