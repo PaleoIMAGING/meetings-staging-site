@@ -1,8 +1,8 @@
 # SAMPLE RECORD: illustrative only, not a real PaleoIMAGING event.
 schema_version: 1
-id: sample-wg4-hybrid-datasets
+id: sample-wg4-hybrid-dataformats
 sample: true
-title: "[SAMPLE] WG4 datasets hybrid session"
+title: "[SAMPLE] WG4 data formats hybrid session"
 description: "Sample hybrid meeting: participants can attend in a room or online. Registration is required to receive the online link."
 wgs: [wg4]
 type: wg-meeting
