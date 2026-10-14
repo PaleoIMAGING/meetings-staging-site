@@ -183,3 +183,43 @@ fieldset.field { border: 0; padding: 0; margin: 0 0 1rem; }
   .form-section { padding: 1rem; }
   .btn-row .btn { flex: 1 1 100%; text-align: center; }
 }
+
+/* ---- site navigation and content pages ---- */
+.site-header__inner { flex-wrap: wrap; }
+.site-header nav { flex: 1 1 auto; }
+.site-header .nav { flex-wrap: wrap; justify-content: center; }
+.nav > li { position: relative; }
+.nav a { padding: .25rem 0; display: inline-block; }
+.has-sub > .sub { display: none; position: absolute; left: 0; top: 100%; z-index: 5; min-width: 15rem; flex-direction: column; gap: 0; background: #fff; border: 1px solid var(--line); border-radius: .375rem; padding: .35rem 0; box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+.has-sub:hover > .sub, .has-sub:focus-within > .sub { display: flex; }
+.sub a { display: block; padding: .4rem .9rem; white-space: nowrap; }
+.sub a:hover { background: var(--accent-soft); }
+.header-tools { display: flex; align-items: center; gap: .75rem; }
+.site-header .icon-link { display: inline-flex; padding: .25rem; color: var(--ink-soft); }
+.site-header .icon-link:hover { color: var(--accent); }
+.site-header .btn { color: #fff; font-weight: 500; }
+
+.site-footer a { color: inherit; }
+.site-footer p a:first-of-type { margin-left: .5rem; }
+h2 { color: var(--accent); font-size: 1.25rem; }
+
+.members { grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); }
+.member__photo { display: block; width: 100%; height: auto; border-radius: .375rem; margin-bottom: .6rem; }
+.search input[type="search"] { width: 100%; max-width: 32rem; font: inherit; padding: .5rem .6rem; border: 1px solid #8d939a; border-radius: .375rem; }
+
+/* ---- homepage ---- */
+.home main.wrap { display: flex; align-items: center; justify-content: center; text-align: center; padding-top: 3rem; }
+.hero { display: flex; flex-direction: column; align-items: center; max-width: 52rem; }
+.hero-logo { display: block; width: min(100%, 44rem); height: auto; }
+.hero-text { margin: 2rem 0 0; max-width: 38rem; font-size: 1.0625rem; color: var(--ink-soft); }
+.affiliation { margin-top: clamp(2rem, 5vw, 3rem); display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.affiliation p { margin: 0; letter-spacing: .02em; color: var(--ink-soft); }
+.pages-logo { display: block; width: min(60%, 13rem); height: auto; }
+@media (min-width: 40rem) {
+  .affiliation { flex-direction: row; gap: 1.5rem; }
+  .pages-logo { width: 11rem; }
+}
+@media (max-width: 48rem) {
+  .has-sub > .sub { display: flex; position: static; border: 0; box-shadow: none; padding: 0 0 0 .75rem; }
+  .site-header .nav { justify-content: flex-start; gap: .25rem 1rem; }
+}

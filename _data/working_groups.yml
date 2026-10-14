@@ -1,0 +1,28 @@
+# Working Group registry: drives the navigation menu and the Working Group pages.
+# `slug` is the page path under /working-groups/. `repo` is the GitHub repository name
+# in the PaleoIMAGING organization. `repo_private: true` marks restricted workspaces.
+- slug: wg1-standard-materials
+  code: WG1
+  title: Standard Materials
+  repo: wg1-standard-materials
+  repo_private: true
+  summary: Material selection, characterisation, sample holders and distribution.
+- slug: wg2-interlab-comparison
+  code: WG2
+  title: Interlab Comparison
+  repo: wg2-interlab-comparison
+  repo_private: true
+  summary: Interlaboratory comparison of datasets, and harmonised acquisition across laboratories.
+- slug: wg3-best-practices
+  code: WG3
+  title: Best Practices
+  repo: wg3-best-practices
+  repo_private: true
+  summary: Protocols, templates, data quality and processing guidance.
+- slug: wg4-datasets
+  code: WG4
+  title: Datasets
+  # The repository is still named wg4-dataformats (its description reads "Data Formats").
+  repo: wg4-dataformats
+  repo_private: true
+  summary: Metadata, data models, format examples and practices for documenting, exchanging and reusing datasets.

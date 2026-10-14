@@ -1,0 +1,18 @@
+---
+layout: default
+---
+{%- assign wg = site.data.working_groups | where: "slug", page.wg | first -%}
+<p class="crumb"><a href="{{ '/working-groups/' | relative_url }}">&larr; Working Groups</a></p>
+<h1>{{ wg.code }} &mdash; {{ wg.title }}</h1>
+<p class="lead">{{ wg.summary }}</p>
+
+{{ content }}
+
+<h2>Repository</h2>
+<p>
+  <a href="https://github.com/PaleoIMAGING/{{ wg.repo }}" rel="noopener">PaleoIMAGING/{{ wg.repo }}</a>
+  {% if wg.repo_private %}<span class="chip chip--status">Private</span>{% else %}<span class="chip chip--format">Public</span>{% endif %}
+</p>
+{%- if wg.repo_private %}
+<p class="form-note">This workspace is private. The link opens only for GitHub accounts that have been granted access; others will see a &ldquo;404&rdquo; page. Nothing from the repository is published on this website unless stated on the page.</p>
+{%- endif %}

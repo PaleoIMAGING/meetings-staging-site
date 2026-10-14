@@ -1,0 +1,16 @@
+---
+layout: default
+title: Search
+description: Search the PaleoIMAGING website.
+permalink: /search/
+noindex: true
+---
+<h1>Search</h1>
+<form class="search" role="search" onsubmit="return false">
+  <label class="sr-only" for="q">Search the site</label>
+  <input id="q" type="search" placeholder="Search pages and news" autocomplete="off">
+</form>
+<p id="search-status" class="count" role="status"></p>
+<ul id="search-results" class="list"></ul>
+<script id="search-index-url" type="application/json">{{ '/search.json' | relative_url | jsonify }}</script>
+<script src="{{ '/assets/js/search.js' | relative_url }}"></script>

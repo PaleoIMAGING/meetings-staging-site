@@ -1,0 +1,11 @@
+# Core Group members. Add one entry per person; only fields that are filled in are shown.
+# Do not add people, affiliations, roles or photographs until they are confirmed by the person.
+# Example entry (remove the leading "# "):
+#
+# - name: Given Family
+#   role: Co-chair
+#   affiliation: Institution, Country
+#   photo: /assets/images/core-group/given-family.jpg   # optional
+#   url: https://example.org/profile                    # optional
+#   wg: WG2                                             # optional
+[]

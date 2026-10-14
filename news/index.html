@@ -1,0 +1,25 @@
+---
+layout: default
+title: News
+description: News from the PaleoIMAGING community.
+permalink: /news/
+---
+<h1>News</h1>
+<p class="lead">Announcements and updates from the PaleoIMAGING community.</p>
+
+{%- if site.posts.size > 0 %}
+<ul class="list">
+{%- for post in site.posts %}
+  <li class="card">
+    <p class="meta"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%-d %B %Y" }}</time></p>
+    <h2><a href="{{ post.url | relative_url }}">{{ post.title | escape }}</a></h2>
+    {%- if post.excerpt %}<p>{{ post.excerpt | strip_html | truncate: 240 }}</p>{% endif %}
+  </li>
+{%- endfor %}
+</ul>
+{%- else %}
+<div class="empty-state">
+  <h2>No news yet</h2>
+  <p>Announcements will appear here.</p>
+</div>
+{%- endif %}

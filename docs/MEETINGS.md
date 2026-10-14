@@ -232,8 +232,7 @@ so the published calendar starts empty and shows "No meetings are scheduled
 yet". A test fails if a record marked `sample: true` (or named `sample-*`) ever
 appears in `_data/meetings/`. The page also carries `noindex` until the
 calendar is announced (remove `noindex: true` from `meetings/index.html`).
-The homepage does not link to the calendar yet; navigation is enabled
-separately.
+The site navigation (`_includes/header.html`) links to the calendar.
 
 ## Continuous integration
 

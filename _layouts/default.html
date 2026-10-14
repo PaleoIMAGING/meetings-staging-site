@@ -14,21 +14,9 @@
   <link rel="manifest" href="{{ '/assets/favicons/site.webmanifest' | relative_url }}">
   <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
 </head>
-<body>
+<body{% if page.body_class %} class="{{ page.body_class }}"{% endif %}>
   <a class="skip-link" href="#content">Skip to content</a>
-  <header class="site-header">
-    <div class="wrap site-header__inner">
-      <a class="brand" href="{{ '/' | relative_url }}">
-        <img src="{{ '/assets/images/PaleoIMAGING_logo.png' | relative_url }}" alt="PaleoIMAGING">
-      </a>
-      <nav aria-label="Main">
-        <ul>
-          <li><a href="{{ '/' | relative_url }}">Home</a></li>
-          <li><a href="{{ '/meetings/' | relative_url }}"{% if page.url contains '/meetings/' %} aria-current="page"{% endif %}>Meetings</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
+  {% include header.html %}
 
   <main id="content" class="wrap">
     {{ content }}
@@ -36,7 +24,9 @@
 
   <footer class="site-footer">
     <div class="wrap">
-      <p>PaleoIMAGING is a Working Group of <a href="https://pastglobalchanges.org/">PAGES</a>.</p>
+      <p>PaleoIMAGING is a Working Group of <a href="https://pastglobalchanges.org/">PAGES</a> (Past Global Changes).
+      <a href="https://github.com/PaleoIMAGING">GitHub</a> &middot;
+      <a href="https://listserv.unibe.ch/mailman/listinfo/paleoimaging.pages">Join the mailing list</a></p>
     </div>
   </footer>
 </body>
