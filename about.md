@@ -6,7 +6,7 @@ permalink: /about/
 ---
 # About
 
-<p class="lead">PaleoIMAGING is a Working Group of <a href="https://pastglobalchanges.org/">PAGES</a> (Past Global Changes) for the community that uses imaging and analytical scanning techniques on paleoenvironmental archives.</p>
+<p class="lead">PaleoIMAGING is a Working Group of <a href="https://pastglobalchanges.org/science/current-wg/paleoimaging">PAGES</a> (Past Global Changes) for the community that uses imaging and analytical scanning techniques on paleoenvironmental archives.</p>
 
 The techniques covered include hyperspectral imaging, XRF core scanning, micro-XRF and micro-CT, applied to archives such as sediment cores. The group brings together laboratories and researchers who run these methods so that measurements can be compared, documented and shared.
 
