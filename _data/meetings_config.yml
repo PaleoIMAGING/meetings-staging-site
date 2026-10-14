@@ -28,7 +28,7 @@ wgs:
     short: WG3
     active: true
   - id: wg4
-    label: "WG4 · Datasets"
+    label: "WG4 · Data Formats"
     short: WG4
     active: true
   - id: general

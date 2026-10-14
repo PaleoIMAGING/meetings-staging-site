@@ -4,7 +4,7 @@
     "assets/js/meetings-core.js": "9fb9bcaa890a8a7181535833ac3ab463a824e0ee29305af7e30457521707dd18",
     "assets/js/meetings-validate.js": "dbf3001b570c5c14115f16c49e8149b6722561144c2ee6515c39b7d608c0f95a",
     "assets/js/meetings-ics.js": "10b52e513878cbc71dd0a491a6e92660e9010e70979dd27d571d474727aa894f",
-    "_data/meetings_config.yml": "e364508d714c8d6458bb9fdc71dd974d6f59dda470e43b8d4b9aabe110bbf169",
+    "_data/meetings_config.yml": "63fe4f9e06221f5302d13ad65e2a8b39c51be74e76efc6ffdf1aebed159fc088",
     "tools/test/fixtures/validation-vectors.json": "cc7373d44b2f2a3ab65d3f6c8f295e5a1d253a017d8fd80833902b3746a6f8ef"
   }
 }

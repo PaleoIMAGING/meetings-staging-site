@@ -22,7 +22,7 @@ These are implementation tasks and proposals for review, not additional scientif
 | `wg1-standard-materials` | WG1 workspace |
 | `wg2-interlab-comparison` | WG2 workspace |
 | `wg3-best-practices` | WG3 workspace |
-| `wg4-datasets` | WG4 workspace |
+| `wg4-dataformats` | WG4 workspace |
 | `Paleoimaging-techniques-map` | Source code and inventory for the map displayed within the website |
 | `git-introduction` | Introductory Git and GitHub learning materials |
 | `git-demo` | Practical tutorial examples and exercises |
@@ -56,7 +56,7 @@ These are implementation tasks and proposals for review, not additional scientif
 - [ ] Create WG1 — Standard materials.
 - [ ] Create WG2 — Interlab comparison.
 - [ ] Create WG3 — Best practices and workflows.
-- [ ] Create WG4 — Datasets.
+- [ ] Create WG4 — Data Formats.
 - [ ] Use a consistent page structure: purpose, activities, contacts, resources, and participation links.
 - [ ] Prepare consistent README templates for the four WG repositories.
 - [ ] Use the official Gdańsk minutes as the source for documented outcomes and assigned actions.
