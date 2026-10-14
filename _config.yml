@@ -1,7 +1,7 @@
 title: PaleoIMAGING
 description: PaleoIMAGING is a Working Group of PAGES.
 url: "https://paleoimaging.github.io"
-baseurl: ""
+baseurl: "/meetings-staging-site"
 lang: en
 timezone: UTC
 
@@ -18,3 +18,6 @@ exclude:
   - vendor/
   - .github/
   - .gitignore
+
+# Community preview (staging repo only; not part of the production branch).
+preview: true

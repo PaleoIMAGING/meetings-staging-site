@@ -1,8 +1,5 @@
-# Public connection settings for the meeting submission form.
-# Nothing here is secret: the Worker URL and the Turnstile SITE key are public by design.
-# (The Turnstile secret key and the GitHub App key live only in the Worker.)
-# Set enabled: false (or empty endpoint / sitekey) to return the form to review-only.
-enabled: true
-endpoint: "https://paleoimaging-meetings-portal.andrebelem.workers.dev/submit/meeting"
-sitekey: "0x4AAAAAAFR4AjdSJ4lSLm26"
+# PREVIEW ONLY: submissions are disabled so this staging copy can never open production PRs.
+enabled: false
+endpoint: ""
+sitekey: ""
 action: "meeting_submit"
