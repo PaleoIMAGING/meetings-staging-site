@@ -1,0 +1,10 @@
+# TEST FIXTURE ONLY: production-style submission settings used by the preview CI to exercise the shared form
+# script against a fake Worker in jsdom. Never copied into the deployed preview.
+# Public connection settings for the meeting submission form.
+# Nothing here is secret: the Worker URL and the Turnstile SITE key are public by design.
+# (The Turnstile secret key and the GitHub App key live only in the Worker.)
+# Set enabled: false (or empty endpoint / sitekey) to return the form to review-only.
+enabled: true
+endpoint: "https://paleoimaging-meetings-portal.andrebelem.workers.dev/submit/meeting"
+sitekey: "0x4AAAAAAFR4AjdSJ4lSLm26"
+action: "meeting_submit"

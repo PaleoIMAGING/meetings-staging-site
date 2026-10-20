@@ -75,8 +75,18 @@ jobs:
       - name: Check that hostile data is neutralised by the page itself
         run: node tools/site-test.mjs "$RUNNER_TEMP/site-hostile" --hostile
 
-      - name: Check the submission form (conditional fields, validation, accessibility, privacy, sending and error handling)
-        run: node tools/form-test.mjs "$RUNNER_TEMP/site-empty"
+      # Community preview only: the preview has submissions disabled, so the behavioural form tests run against a
+      # throw-away build with production-style submission settings (fake Worker, never deployed); the real preview
+      # build is then checked to be unable to submit.
+      - name: Build a throw-away copy with the live-submission test fixture (never deployed)
+        run: |
+          mkdir "$RUNNER_TEMP/with-live-form"
+          rsync -a --exclude .git --exclude _site --exclude node_modules "$RUNNER_TEMP/without-records/" "$RUNNER_TEMP/with-live-form/"
+          cp tools/test/fixtures/submission-live.yml "$RUNNER_TEMP/with-live-form/_data/meetings_submission.yml"
+          bundle exec jekyll build --source "$RUNNER_TEMP/with-live-form" --destination "$RUNNER_TEMP/site-live-form"
+
+      - name: Check the submission form (conditional fields, validation, accessibility, privacy, sending and error handling) and that the preview cannot submit
+        run: node tools/form-test.mjs "$RUNNER_TEMP/site-empty" --live-fixture "$RUNNER_TEMP/site-live-form"
 
       - name: Build the real repository data (published records and committed feed)
         run: bundle exec jekyll build --destination "$RUNNER_TEMP/site-published"

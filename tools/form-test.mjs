@@ -1,16 +1,33 @@
 // Behavioural tests for the submission form, run against the BUILT site.
 //   node form-test.mjs <_site dir>
+//   node form-test.mjs <_site dir> --live-fixture <_site dir>   (community preview only, see below)
 // Loads meetings/submit/index.html in jsdom with the real scripts (the same
 // files the browser loads) and drives it with DOM events.
 import { readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import assert from "node:assert/strict";
 import { JSDOM, VirtualConsole } from "jsdom";
+import YAML from "yaml";
 import { siteRoot, loadConfig } from "./lib.mjs";
 
 const dir = resolve(process.argv[2] || "");
-const html = readFileSync(join(dir, "meetings", "submit", "index.html"), "utf8");
 const config = loadConfig();
+
+// COMMUNITY PREVIEW (staging repo only). The preview is detected explicitly: `preview: true` in _config.yml
+// AND submissions disabled in _data/meetings_submission.yml. A non-empty baseurl is NOT used for this.
+// In that case the page under <_site dir> is the real, review-only preview. All behavioural tests (validation,
+// conditional fields, accessibility, sending and error handling against a fake Worker) still run, against a
+// throw-away build made with production-style submission settings (--live-fixture; fixture values live in
+// tools/test/fixtures/submission-live.yml, nothing is deployed and fetch/Turnstile are fakes). Extra tests then
+// assert that the real preview itself cannot submit. Without the preview flag the suite is unchanged.
+const siteConfig = YAML.parse(readFileSync(join(siteRoot, "_config.yml"), "utf8"));
+const submission = YAML.parse(readFileSync(join(siteRoot, "_data", "meetings_submission.yml"), "utf8")) || {};
+const PREVIEW = siteConfig.preview === true && submission.enabled !== true;
+const BASEURL = String(siteConfig.baseurl || "").replace(/\/$/, "");
+const fixtureArg = process.argv.indexOf("--live-fixture");
+if (PREVIEW && fixtureArg < 0) { console.error("preview mode needs --live-fixture <_site dir built with the live submission fixture>"); process.exit(2); }
+const previewHtml = readFileSync(join(dir, "meetings", "submit", "index.html"), "utf8");
+const html = PREVIEW ? readFileSync(join(resolve(process.argv[fixtureArg + 1] || ""), "meetings", "submit", "index.html"), "utf8") : previewHtml;
 const FIXED = Date.UTC(2026, 9, 8, 12);
 const SCRIPTS = ["meetings-core.js", "meetings-validate.js", "meetings-ics.js", "meetings-render.js", "meetings-form-model.js", "meetings-form.js"];
 
@@ -105,9 +122,10 @@ test("four sections in the requested order", () => {
   assert.deepEqual(heads, ["1 Meeting information", "2 Date & Time", "3 Location & Access", "4 Organizer"]);
 });
 
-test("page is indexable and not linked from the site navigation", () => {
+test(PREVIEW ? "page is noindex (preview) and not linked from the site navigation" : "page is indexable and not linked from the site navigation", () => {
   const { d } = load();
-  assert.ok(!q(d, 'meta[name="robots"]'), "noindex removed");
+  if (PREVIEW) assert.equal(q(d, 'meta[name="robots"]').content, "noindex, nofollow");
+  else assert.ok(!q(d, 'meta[name="robots"]'), "noindex removed");
   const nav = qa(d, "header nav a").map((a) => a.getAttribute("href"));
   assert.ok(!nav.some((h) => /submit/.test(h)), "no submit link in navigation");
 });
@@ -629,7 +647,7 @@ test("SEND: the only network code is the single POST in the form script, and the
   assert.equal(q(d, "#submit-form").getAttribute("action"), null);
   const cfgEl = q(d, "#submission-config");
   assert.equal(cfgEl.getAttribute("data-endpoint"), ENDPOINT);
-  assert.ok(!/staging|localhost/i.test(html), "no staging or local address in the page");
+  assert.ok(!/staging|localhost/i.test(PREVIEW ? html.split(BASEURL).join("") : html), "no staging or local address in the page");
   assert.ok(!/secret|private[_ -]?key/i.test(cfgEl.outerHTML), "only public values in the config element");
 });
 
@@ -792,10 +810,75 @@ test("USABILITY: Clear form resets everything and the draft", () => {
 
 test("USABILITY: the page links back to the calendar and uses the shared layout", () => {
   const { d } = load();
-  assert.equal(q(d, ".crumb a").getAttribute("href"), "/meetings/");
+  assert.equal(q(d, ".crumb a").getAttribute("href"), BASEURL + "/meetings/");
   assert.ok(q(d, "header.site-header"));
   assert.ok(q(d, 'link[href$="site.css"]'), "same stylesheet as the calendar");
 });
+
+// ------------------------------------------------- community preview: the real preview cannot submit
+if (PREVIEW) {
+  const real = new JSDOM(previewHtml).window.document;
+  const sources = ["meetings-core.js", "meetings-validate.js", "meetings-ics.js", "meetings-render.js", "meetings-form-model.js", "meetings-form.js"];
+  const realCtx = () => {
+    const errors = [];
+    const vc = new VirtualConsole();
+    vc.on("jsdomError", (e) => errors.push(e.message));
+    const dom = new JSDOM(previewHtml.replace(/<script src="[^"]*"><\/script>/g, ""), { url: "https://paleoimaging.github.io" + BASEURL + "/meetings/submit/", runScripts: "outside-only", virtualConsole: vc, pretendToBeVisual: true });
+    const w = dom.window;
+    const calls = [];
+    w.Element.prototype.scrollIntoView = function () {};
+    w.fetch = (...a) => { calls.push(["fetch", a]); throw new Error("network must not be used"); };
+    w.XMLHttpRequest = function () { calls.push(["xhr"]); throw new Error("network must not be used"); };
+    w.navigator.sendBeacon = (...a) => { calls.push(["beacon", a]); return false; };
+    const widget = { renders: 0 };
+    w.turnstile = { render: () => { widget.renders++; }, reset() {} };
+    for (const f of sources) w.eval(readFileSync(join(siteRoot, "assets/js", f), "utf8"));
+    return { w, d: w.document, errors, calls, widget };
+  };
+
+  test("PREVIEW: configuration is disabled with an empty endpoint and an empty Turnstile sitekey", () => {
+    assert.equal(submission.enabled, false);
+    assert.equal(submission.endpoint, "");
+    assert.equal(submission.sitekey, "");
+  });
+
+  test("PREVIEW: the built page exposes no active submission configuration", () => {
+    assert.equal(real.querySelector("#submission-config"), null);
+    assert.equal(real.querySelector("#privacy-notice"), null);
+    assert.equal(real.querySelector("#turnstile-box"), null);
+    assert.ok(!/workers\.dev|0x4AAAAA|challenges\.cloudflare\.com|data-endpoint|data-sitekey/i.test(previewHtml), "no Worker URL, sitekey or Turnstile reference");
+    assert.equal(real.querySelector("#submit-form").getAttribute("action"), null);
+    assert.match(real.querySelector("#submission-status").textContent, /not (yet )?(open|enabled|available)|disabled|review/i);
+  });
+
+  test("PREVIEW: the public preview cannot initiate a submission, even with the button force-enabled", () => {
+    const { w, d, errors, calls, widget } = realCtx();
+    assert.deepEqual(errors, []);
+    fillValid(w, d);
+    submit(w, d);
+    const btn = q(d, "#submit-btn");
+    assert.ok(!q(d, "#review-panel").hidden, "review step still works");
+    assert.ok(btn.disabled, "button disabled");
+    btn.disabled = false;
+    btn.click();
+    assert.match(q(d, "#form-status").textContent, /not enabled/i);
+    assert.deepEqual(calls, [], "no network call of any kind");
+    assert.equal(widget.renders, 0, "no Turnstile widget");
+    assert.ok(!q(w.document, 'head script[src*="challenges.cloudflare.com"]'), "Cloudflare script never loaded");
+  });
+
+  test("PREVIEW: robots policy is noindex, nofollow and the preview banner is shown", () => {
+    assert.equal(real.querySelector('meta[name="robots"]').content, "noindex, nofollow");
+    assert.match(real.querySelector(".preview-bar").textContent, /submissions are disabled/i);
+  });
+
+  test("PREVIEW: breadcrumb, navigation and stylesheet respect the baseurl", () => {
+    assert.equal(real.querySelector(".crumb a").getAttribute("href"), BASEURL + "/meetings/");
+    const internal = [...real.querySelectorAll("header a[href], link[rel=stylesheet][href], .crumb a")].map((e) => e.getAttribute("href")).filter((h) => h.startsWith("/"));
+    assert.ok(internal.length > 0);
+    for (const h of internal) assert.ok(h === BASEURL || h.startsWith(BASEURL + "/"), "outside baseurl: " + h);
+  });
+}
 
 // --------------------------------------------------------------------- report
 await Promise.all(pending);
