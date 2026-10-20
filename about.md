@@ -8,26 +8,15 @@ permalink: /about/
 
 <p class="lead">PaleoIMAGING is a Working Group of <a href="https://pastglobalchanges.org/paleoimaging">PAGES</a> (Past Global Changes) for the community that uses imaging and analytical scanning techniques on paleoenvironmental archives.</p>
 
-The techniques covered include hyperspectral imaging, X-ray fluorescence (XRF) scanning and mapping, micro-computed tomography and mass spectrometry imaging, applied to archives such as sediment cores. The group brings together laboratories and researchers who run these methods so that measurements can be compared, documented and shared. The [imaging techniques]({{ '/techniques/' | relative_url }}) are introduced on their own page.
+The techniques covered include hyperspectral imaging, X-ray fluorescence (XRF) scanning and mapping, micro-computed tomography and mass spectrometry imaging, applied to archives such as sediment cores. The group brings together laboratories and researchers who run these methods so that measurements can be compared, documented and shared. See [Imaging techniques]({{ '/techniques/' | relative_url }}) for an introduction to each method.
 
 ## Scientific goals
 
-Traditional proxy records, such as geochemical, physical or biological measurements made on discrete samples, are the backbone of paleoenvironmental research. PaleoIMAGING aims to enhance them by integrating them with high-resolution imaging data.
+Conventional proxy records are the backbone of paleoenvironmental research, but they are often too coarse to resolve short-lived change. High-resolution imaging techniques offer a temporal resolution that was previously out of reach. PaleoIMAGING aims to enhance traditional proxy records by integrating them with such imaging data.
 
-<blockquote class="source-quote">
-  <p>Our group aims to enhance traditional proxy records by integrating them with high-resolution imaging data. Each of these imaging techniques offers previously inaccessible temporal resolution for reconstructing past environmental and climate change. But their combination into multi-proxy datasets aligned at micrometer-scale can be crucial in order to better understand high-frequency variability and extreme events, quantify short-term human environmental impacts, and provide the detailed, quantitative records needed by the climate modeling community to improve predictions.</p>
-  <footer>Source: <a href="https://pastglobalchanges.org/paleoimaging">PAGES PaleoIMAGING Working Group</a></footer>
-</blockquote>
+The central step is to combine several imaging techniques and conventional proxies into multiproxy datasets aligned at micrometer scale. Read side by side, these records can reveal high-frequency environmental and climate variability, help to identify and interpret extreme events, and show how human activity has altered environments over short periods.
 
-In practice, this means:
-
-- **Combining imaging with conventional proxies.** Imaging methods map properties of an archive continuously and at very fine scale, which can reveal structure that sparse sampling misses. Conventional proxies remain essential for calibration and interpretation. Used together, each strengthens the other.
-- **Multi-proxy integration at micrometer scale.** Each technique records a different property of the same material. Datasets from several techniques, aligned to one another at micrometer scale, allow the signals to be read side by side instead of in isolation.
-- **High-frequency variability and extreme events.** The temporal resolution offered by imaging makes it possible to study variability on short time scales, including individual events, that coarser records cannot resolve.
-- **Short-term human environmental impacts.** Detailed records can help quantify how human activity has changed environments over short periods.
-- **Climate reconstruction and modelling.** The group aims to provide detailed, quantitative records of the kind the climate modelling community needs to improve predictions.
-
-Reaching these goals depends on measurements that laboratories can compare and on datasets that others can reuse. That is why the group also works on standards, comparison and documentation.
+The aim is detailed, quantitative records that meet the needs of the climate modelling community and support climate reconstruction and better predictions. This summary follows the description of the [PAGES PaleoIMAGING Working Group](https://pastglobalchanges.org/paleoimaging).
 
 ## Objectives
 

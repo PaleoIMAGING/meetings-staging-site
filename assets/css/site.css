@@ -236,3 +236,4 @@ h2 { color: var(--accent); font-size: 1.25rem; }
   .technique-figure { float: right; width: 40%; max-width: 18rem; margin: .25rem 0 .75rem 1.25rem; }
   #content .list .card::after { content: ""; display: block; clear: both; }
 }
+.technique-figure .credit { display: block; color: var(--ink-faint); }

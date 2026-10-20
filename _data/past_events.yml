@@ -10,8 +10,8 @@
 #   format:   in-person | online | hybrid
 #   source:   {label, url} where the facts above were verified
 #   links:    [{label, url}] programme, report, presentations, photos, recordings, ...
-#   pending:  materials expected but not yet available, e.g. ["programme", "report"].
-#             Shown as "To be added"; move each item into `links` once published.
+#   pending:  internal editorial note of materials expected but not yet available, e.g. ["programme"].
+#             Never shown on the website; move each item into `links` once it is published.
 
 - id: gdansk-2026
   title: "PaleoIMAGING Data Synthesis: From Challenges to Solutions"
@@ -33,22 +33,6 @@
     - workshop report
     - presentations
     - photos
-
-- id: egu-2026
-  title: "EGU General Assembly 2026"
-  type: conference
-  start: "2026-05-03"
-  end: "2026-05-08"
-  location: "Vienna, Austria"
-  summary: "Listed by PAGES among the PaleoIMAGING meetings. The PaleoIMAGING contribution (sessions, presentations) has not been confirmed for this page."
-  source:
-    label: PAGES PaleoIMAGING meetings
-    url: https://pastglobalchanges.org/taxonomy/term/1752/meetings
-  links:
-    - label: PAGES calendar entry
-      url: https://pastglobalchanges.org/calendar/138597
-  pending:
-    - PaleoIMAGING sessions and presentations
 
 - id: mainz-2025
   title: "1st PaleoIMAGING Workshop"

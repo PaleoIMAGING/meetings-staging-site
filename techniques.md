@@ -16,7 +16,11 @@ permalink: /techniques/
     {%- if t.image and t.image.src %}
     <figure class="technique-figure">
       <img src="{{ t.image.src | relative_url }}" alt="{{ t.image.alt | escape }}" loading="lazy">
-      {%- if t.image.caption %}<figcaption>{{ t.image.caption | escape }}</figcaption>{% endif %}
+      {%- if t.image.caption or t.image.credit %}
+      <figcaption>{{ t.image.caption | escape }}
+        {%- if t.image.credit %} <span class="credit">{% if t.image.credit_url %}<a href="{{ t.image.credit_url | escape }}" rel="noopener">{{ t.image.credit | escape }}</a>{% else %}{{ t.image.credit | escape }}{% endif %}</span>{% endif -%}
+      </figcaption>
+      {%- endif %}
     </figure>
     {%- endif %}
     <p><strong>What it measures.</strong> {{ t.measures | escape }}</p>

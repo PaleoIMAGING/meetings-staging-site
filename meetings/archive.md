@@ -37,9 +37,6 @@ permalink: /meetings/archive/
       {%- endfor %}
     </ul>
     {%- endif %}
-    {%- if e.pending and e.pending.size > 0 %}
-    <p class="meta">To be added: {{ e.pending | join: ", " | escape }}.</p>
-    {%- endif %}
     <p class="meta">Source: <a href="{{ e.source.url | escape }}" rel="noopener">{{ e.source.label | escape }}</a></p>
   </li>
 {%- endfor %}
