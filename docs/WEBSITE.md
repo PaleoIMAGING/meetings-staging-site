@@ -9,7 +9,7 @@ Content is Markdown and YAML; there are no plugins beyond the GitHub Pages set.
 | Core Group members | `_data/core_group.yml` (empty until members are confirmed; the page shows a placeholder) |
 | News | Add `_posts/YYYY-MM-DD-title.md` with `layout: post` and a `title` |
 | Search | `search.json` (built index) and `assets/js/search.js`; pages with `noindex: true` are left out |
-| Imaging techniques (`/techniques/`) | `_data/techniques.yml`: one entry per technique (name, abbreviation, what it measures, why it matters, optional resource links) |
+| Imaging techniques (`/techniques/`) | `_data/techniques.yml`: one entry per technique (name, abbreviation, what it measures, why it matters, optional resource links and optional `image` with alt text and caption; store images in `assets/images/techniques/`) |
 | Past events archive (`/meetings/archive/`) | `_data/past_events.yml`: one entry per event; fields are documented at the top of the file |
 | Join Us | Links directly to the Mailman list; there is no separate registration |
 

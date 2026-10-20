@@ -2,7 +2,16 @@
 # Descriptions follow the PAGES PaleoIMAGING page (https://pastglobalchanges.org/paleoimaging).
 # Keep claims general: no instrument specifications or performance figures unless a source is cited.
 #
-# Fields: id, abbr, name, measures, relevance (all required); resources (optional list of {label, url}).
+# Fields: id, abbr, name, measures, relevance (all required); resources (optional list of {label, url});
+# image (optional): {src, alt, caption}. Put the file in assets/images/techniques/ and set
+#   src: /assets/images/techniques/<file>. `alt` is required for accessibility; add a credit in `caption`.
+#   The picture floats beside the text on wide screens and stacks above it on phones.
+# Example:
+#   image:
+#     src: /assets/images/techniques/hsi-core.jpg
+#     alt: Hyperspectral image of a split sediment core
+#     caption: "HSI of a sediment core. Image: <institution>."
+
 - id: hsi
   abbr: HSI
   name: Hyperspectral imaging

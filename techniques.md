@@ -13,6 +13,12 @@ permalink: /techniques/
   <li class="card" id="{{ t.id | escape }}">
     <p class="meta"><span class="chip">{{ t.abbr | escape }}</span></p>
     <h2>{{ t.name | escape }}</h2>
+    {%- if t.image and t.image.src %}
+    <figure class="technique-figure">
+      <img src="{{ t.image.src | relative_url }}" alt="{{ t.image.alt | escape }}" loading="lazy">
+      {%- if t.image.caption %}<figcaption>{{ t.image.caption | escape }}</figcaption>{% endif %}
+    </figure>
+    {%- endif %}
     <p><strong>What it measures.</strong> {{ t.measures | escape }}</p>
     <p><strong>Why it matters.</strong> {{ t.relevance | escape }}</p>
     {%- if t.resources and t.resources.size > 0 %}

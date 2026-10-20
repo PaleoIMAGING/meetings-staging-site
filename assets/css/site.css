@@ -229,3 +229,10 @@ h2 { color: var(--accent); font-size: 1.25rem; }
 .source-quote p { margin: 0 0 .5rem; }
 .source-quote footer { color: var(--ink-soft); font-size: .875rem; }
 .resource-links { margin: .5rem 0 0; padding-left: 1.2rem; font-size: .9375rem; }
+.technique-figure { margin: 0 0 .75rem; }
+.technique-figure img { display: block; width: 100%; height: auto; border-radius: .375rem; }
+.technique-figure figcaption { margin-top: .35rem; color: var(--ink-soft); font-size: .8125rem; }
+@media (min-width: 40rem) {
+  .technique-figure { float: right; width: 40%; max-width: 18rem; margin: .25rem 0 .75rem 1.25rem; }
+  #content .list .card::after { content: ""; display: block; clear: both; }
+}
