@@ -1,0 +1,51 @@
+# Imaging techniques shown on /techniques/. One entry per technique; the page renders them in this order.
+# Descriptions follow the PAGES PaleoIMAGING page (https://pastglobalchanges.org/paleoimaging).
+# Keep claims general: no instrument specifications or performance figures unless a source is cited.
+#
+# Fields: id, abbr, name, measures, relevance (all required); resources (optional list of {label, url});
+# image (optional): {src, alt, caption, credit, credit_url}. Prefer scientific output (maps, sections, composites) to photographs of instruments. Put the file in assets/images/techniques/ and set
+#   src: /assets/images/techniques/<file>. `alt` is required for accessibility; add a credit in `caption`.
+#   The picture floats beside the text on wide screens and stacks above it on phones.
+# Example:
+#   image:
+#     src: /assets/images/techniques/hsi-core.jpg
+#     alt: Hyperspectral image of a split sediment core
+#     caption: "Spectral composite of a sediment core."
+#     credit: "Image: <author, institution, year>"      # optional; use only with permission
+#     credit_url: https://example.org/source            # optional link for the credit
+
+- id: hsi
+  abbr: HSI
+  name: Hyperspectral imaging
+  measures: Spectral signatures recorded at every position on the surface of an archive, such as a split sediment core.
+  relevance: Spectral signatures can be used to trace organic and inorganic indicators, for example productivity, redox conditions and sediment provenance.
+  resources:
+    - label: Working Group 3, best practices
+      url: /working-groups/wg3-best-practices/
+
+- id: xrf
+  abbr: XRF / µXRF
+  name: X-ray fluorescence scanning and mapping
+  measures: Elemental composition along a core (XRF scanning) or across a surface (micro-XRF, µXRF), recorded as high-resolution elemental maps.
+  relevance: Elemental maps help to reconstruct sediment provenance, ecosystem change and depositional conditions.
+  resources:
+    - label: microXRF_to_NetCDF, a converter for micro-XRF data (GitHub)
+      url: https://github.com/PaleoIMAGING/microXRF_to_NetCDF
+
+- id: ct
+  abbr: µCT
+  name: Micro-computed tomography
+  measures: The internal structure of a sample in three dimensions, shown as variations in density.
+  relevance: Density variations can record geohazards such as volcanic eruptions, earthquakes and floods.
+  resources:
+    - label: Working Group 4, datasets
+      url: /working-groups/wg4-datasets/
+
+- id: msi
+  abbr: MSI
+  name: Mass spectrometry imaging
+  measures: The spatial distribution of molecules across a sample surface.
+  relevance: Mapping organic biomarkers, such as proxies for temperature or biomass burning, adds molecular information at high spatial resolution.
+  resources:
+    - label: Working Group 4, datasets
+      url: /working-groups/wg4-datasets/

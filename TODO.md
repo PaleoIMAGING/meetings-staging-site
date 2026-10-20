@@ -131,6 +131,12 @@ These are implementation tasks and proposals for review, not additional scientif
 - [ ] Relationship between Proton Drive, Zenodo, GitHub, and longer-term storage.
 - [ ] Whether any overlapping tutorial content should be consolidated later.
 
+## 11. Planned events to track
+
+- [ ] Rouen, France: international hybrid kick-off workshop planned for Q2 2026 in the PAGES PaleoIMAGING working group plan (https://pastglobalchanges.org/paleoimaging). The first workshop held under the Working Group was in Gdańsk (30 September – 2 October 2026). Confirm whether the Rouen kick-off is still planned, rescheduled or replaced, then add it to the Meetings calendar or the events archive accordingly.
+- [ ] EGU General Assembly 2026 (Vienna, 3–8 May 2026): listed by PAGES among the PaleoIMAGING meetings. The entry was removed from the public events archive until a specific PaleoIMAGING contribution (session, talks, side meeting) is documented; then restore it in `_data/past_events.yml`.
+- [ ] Workshop 2 (synthesis and summer school) planned for Q3 2027 and a short course at a major conference in 2027; no location is given by PAGES.
+
 ## Completion notes
 
 When completing a task, mark its checkbox and add a short note or a link to the relevant commit, issue, or review where useful. Preserve pending decisions rather than presenting them as completed agreements.

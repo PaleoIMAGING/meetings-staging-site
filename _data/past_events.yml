@@ -1,0 +1,51 @@
+# Archive of past PaleoIMAGING workshops, meetings, conferences and community events.
+# Shown on /meetings/archive/, newest first (sorted by `start`; list order does not matter).
+# This is separate from _data/meetings/, which holds the validated calendar records and feed.
+# Add an entry by copying one below. Only publish verified facts; cite a source for each entry.
+#
+# Required: id, title, type, start, location, source
+# Optional: end, format, organizers, summary, links, pending
+#   type:     workshop | meeting | conference | training | other
+#   start/end: quoted dates "YYYY-MM-DD" (leave `end` out for one-day events)
+#   format:   in-person | online | hybrid
+#   source:   {label, url} where the facts above were verified
+#   links:    [{label, url}] programme, report, presentations, photos, recordings, ...
+#   pending:  internal editorial note of materials expected but not yet available, e.g. ["programme"].
+#             Never shown on the website; move each item into `links` once it is published.
+
+- id: gdansk-2026
+  title: "PaleoIMAGING Data Synthesis: From Challenges to Solutions"
+  type: workshop
+  start: "2026-09-30"
+  end: "2026-10-02"
+  location: "University of Gdańsk, Gdańsk, Poland"
+  format: hybrid
+  organizers: "Wojciech Tylmann, Andrei Kurbatov and Willem van der Bilt, with the PAGES PaleoIMAGING Working Group"
+  summary: "Workshop for researchers using micro-XRF, mass spectrometry imaging, hyperspectral imaging or micro-computed tomography, on bringing non-destructive imaging methods into standardised workflows and setting the agenda of the Working Group for the coming year."
+  source:
+    label: PAGES event page
+    url: https://pastglobalchanges.org/calendar/139001
+  links:
+    - label: Event flyer (PDF)
+      url: https://pastglobalchanges.org/sites/default/files/2026-07/paleoimaging_flier-3_0.pdf
+  pending:
+    - programme
+    - workshop report
+    - presentations
+    - photos
+
+- id: mainz-2025
+  title: "1st PaleoIMAGING Workshop"
+  type: workshop
+  # The University of Gdańsk report gives 11-13 March 2025; the PAGES scientific-goals page says
+  # February 2025. Confirm with the organisers and correct the dates if needed.
+  start: "2025-03-11"
+  end: "2025-03-13"
+  location: "Johannes Gutenberg University Mainz, Germany"
+  summary: "First meeting of researchers using imaging techniques to reconstruct environmental change, covering X-ray fluorescence, computed tomography, mass spectrometry imaging and hyperspectral imaging. It led to a decision to formalise the joint efforts of the participating groups."
+  source:
+    label: University of Gdańsk, Faculty of Oceanography and Geography
+    url: https://geomorfologia.ug.edu.pl/en/2025/03/18/1st-paleoimaging-workshop-mainz-2/
+  pending:
+    - programme
+    - report
