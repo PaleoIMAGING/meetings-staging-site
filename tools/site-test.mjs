@@ -20,9 +20,15 @@ const ok = (cond, msg) => { assert.ok(cond, msg); checks++; };
 
 // Homepage uses the shared layout: site navigation links to the calendar, and the PAGES affiliation stays.
 const home = read("index.html");
-ok(/class="site-header"/.test(home) && /href="\/meetings\/"/.test(home), "homepage must carry the site navigation with a Meetings link");
+// The Meetings link is expected under the configured baseurl ("" in production, a subpath on a preview).
+const baseurl = ((readFileSync(join(siteRoot, "_config.yml"), "utf8").match(/^baseurl:\s*["']?([^"'\s#]*)/m) || [])[1] || "").replace(/\/$/, "");
+const homeDoc = new JSDOM(home).window.document;
+const navPaths = [...homeDoc.querySelectorAll(".site-header a[href]")].map((a) => a.getAttribute("href"));
+ok(homeDoc.querySelector(".site-header") && navPaths.includes(`${baseurl}/meetings/`), `homepage must carry the site navigation with a Meetings link at ${baseurl}/meetings/`);
 ok(/PAGES_logo\.svg/.test(home), "homepage must keep the PAGES logo");
-ok(!/<meta name="robots"/.test(home), "homepage must stay indexable");
+// Production stays indexable; a preview (non-empty baseurl) must instead be noindex, nofollow.
+const robots = homeDoc.querySelector('meta[name="robots"]');
+ok(baseurl ? robots && robots.content === "noindex, nofollow" : !robots, baseurl ? "preview homepage must be noindex, nofollow" : "homepage must stay indexable");
 
 // Feed: valid iCalendar with CRLF endings.
 const feed = readFileSync(join(dir, "meetings", "feed.ics"), "utf8");
